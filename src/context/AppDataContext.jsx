@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { getAllAppointments } from "../services/appointments/appointmentService";
 import { getAllClientes } from "../services/clients/clientService";
 import { getAllEarnings } from "../services/earnings/earningService";
@@ -20,69 +20,60 @@ export function AppDataProvider({ children }) {
   const [services, setServices] = useState(null);
   const [users, setUsers] = useState(null);
 
-  useEffect(() => {
-    const fetchAll = async () => {
-      const appointmentsRes = await getAllAppointments();
-      setAppointments(appointmentsRes?.supabaseResults || []);
-
-      const clientsRes = await getAllClientes();
-      setClients(clientsRes?.supabaseResults || []);
-
-      const earningsRes = await getAllEarnings();
-      setEarnings(earningsRes?.supabaseResults || []);
-
-      const hairdressersRes = await getAllHairdressers();
-      setHairdressers(hairdressersRes?.supabaseResults || []);
-
-      const hairdressersServicesRes = await getAllHairdressersServices();
-      setHairdressersServices(hairdressersServicesRes?.supabaseResults || []);
-
-      const profilesRes = await getAllProfiles();
-      setProfiles(profilesRes?.supabaseResults || []);
-
-      const servicesRes = await getAllServices();
-      setServices(servicesRes?.supabaseResults || []);
-
-      const usersRes = await getAllUsers();
-      setUsers(usersRes?.supabaseResults || []);
-    };
-
-    fetchAll();
-  }, []);
-
-  const fetchServices = async () => {
-    const updated = await getAllServices();
-    const sorted = (updated?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
-    setServices(sorted);
+  // Solo funciones para cargar los datos desde componentes
+  const fetchAppointments = async () => {
+    const res = await getAllAppointments();
+    setAppointments(res?.supabaseResults || []);
   };
 
   const fetchClients = async () => {
-    const updated = await getAllClientes();
-    const sorted = (updated?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
+    const res = await getAllClientes();
+    const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
     setClients(sorted);
   };
 
-  const fetchUsers = async () => {
-    const updated = await getAllUsers();
-    const sorted = (updated?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
-    setUsers(sorted);
+  const fetchEarnings = async () => {
+    const res = await getAllEarnings();
+    setEarnings(res?.supabaseResults || []);
   };
 
   const fetchHairdressers = async () => {
-    const updated = await getAllHairdressers();
-    const sorted = (updated?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
+    const res = await getAllHairdressers();
+    const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
     setHairdressers(sorted);
+  };
+
+  const fetchHairdressersServices = async () => {
+    const res = await getAllHairdressersServices();
+    setHairdressersServices(res?.supabaseResults || []);
+  };
+
+  const fetchProfiles = async () => {
+    const res = await getAllProfiles();
+    setProfiles(res?.supabaseResults || []);
+  };
+
+  const fetchServices = async () => {
+    const res = await getAllServices();
+    const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
+    setServices(sorted);
+  };
+
+  const fetchUsers = async () => {
+    const res = await getAllUsers();
+    const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
+    setUsers(sorted);
   };
 
   return (
     <AppDataContext.Provider
       value={{
-        appointments, setAppointments,
+        appointments, setAppointments, fetchAppointments,
         clients, setClients, fetchClients,
-        earnings, setEarnings,
+        earnings, setEarnings, fetchEarnings,
         hairdressers, setHairdressers, fetchHairdressers,
-        hairdressersServices, setHairdressersServices,
-        profiles, setProfiles,
+        hairdressersServices, setHairdressersServices, fetchHairdressersServices,
+        profiles, setProfiles, fetchProfiles,
         services, setServices, fetchServices,
         users, setUsers, fetchUsers,
       }}

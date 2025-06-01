@@ -2,11 +2,11 @@ import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
 import { FiUser, FiMail, FiPhone, FiMoreHorizontal, FiEdit2 } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HairdresserForm from "../../components/hairdressers/HairdresserForm";
 
 export default function Hairdressers() {
-  const { hairdressers } = useAppData();
+  const { hairdressers, fetchHairdressers } = useAppData();
   const loading = hairdressers === null;
   const hairdresserList = hairdressers || [];
 
@@ -14,6 +14,12 @@ export default function Hairdressers() {
   const [showModal, setShowModal] = useState(false);
   const [editingHairdresser, setEditingHairdresser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+      if (!hairdressers) {
+        fetchHairdressers();
+      }
+    }, [hairdressers, fetchHairdressers]);
 // Función para normalizar y eliminar tildes/acentos
 const normalizeText = (text) =>
   text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();

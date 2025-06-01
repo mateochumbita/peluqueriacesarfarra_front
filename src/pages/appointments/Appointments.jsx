@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
 import { FiCalendar, FiClock, FiMoreHorizontal, FiUser } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
 
 export default function Appointments() {
-  const { appointments, clients, services, hairdressersServices } = useAppData();
+  const { appointments, clients, services, hairdressersServices, fetchAppointments, fetchClients, fetchServices, fetchHairdressersServices } = useAppData();
   const [view, setView] = useState("tabla");
+
+
+   useEffect(() => {
+        if (!clients) {
+          fetchClients();
+        }
+        if (!services) {
+          fetchServices();
+        }
+        if (!appointments) {
+          fetchAppointments();
+         
+        }
+        if (!hairdressersServices) {
+          fetchHairdressersServices();}
+      }, [clients, services, appointments, hairdressersServices, fetchClients, fetchServices, fetchAppointments, fetchHairdressersServices]);
 
   // Loading solo si los datos aún no están cargados (null)
   const loading =

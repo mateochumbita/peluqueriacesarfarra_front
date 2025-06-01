@@ -8,12 +8,12 @@ import {
   FiEdit2,
 } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClientForm from "../../components/clients/ClientForm";
 import { Link } from "react-router-dom";
 import ProfileModal from "../../components/common/ProfileModal";
 export default function Clients() {
-  const { clients } = useAppData();
+  const { clients, fetchClients } = useAppData();
   const loading = clients === null;
   const clientList = clients || [];
 
@@ -22,6 +22,14 @@ export default function Clients() {
   const [editingClient, setEditingClient] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState(null);
+
+
+    useEffect(() => {
+      if (!clients) {
+        fetchClients();
+       
+      }
+    }, [clients, fetchClients]);
 
   const handleViewProfile = (id) => {
     setSelectedProfileId(id);

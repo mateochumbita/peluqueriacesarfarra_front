@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
 import {
@@ -23,6 +23,11 @@ export default function Services() {
 
   // Toast global para la página
   const [toast, setToast] = useState(null);
+    useEffect(() => {
+    if (!services) {
+      fetchServices();
+    }
+  }, [services, fetchServices]);
 
   // Nuevo estado para eliminar
   const [deletingService, setDeletingService] = useState(null);
