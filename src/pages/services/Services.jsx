@@ -12,6 +12,7 @@ import {
 import { useAppData } from "../../context/AppDataContext";
 import ServiceForm from "../../components/services/ServiceForm";
 import { deleteServices } from "../../services/services/servicesService";
+import { normalizeText } from "../../utils/stringUtils";
 
 export default function Services() {
   const { services, fetchServices } = useAppData();
@@ -34,11 +35,6 @@ export default function Services() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const normalizeText = (text) =>
-    text
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
 
   const filteredServices = serviceList.filter((h) =>
     normalizeText(`${h.Nombre} ${h.Descripcion}`).includes(

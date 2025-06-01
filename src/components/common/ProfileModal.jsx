@@ -1,16 +1,35 @@
-import { FiUser, FiMail, FiPhone, FiCalendar, FiTag, FiX } from "react-icons/fi";
+import {
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiCalendar,
+  FiTag,
+  FiX,
+} from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
+import { useEffect } from "react";
 
 export default function ProfileModal({ open, onClose, profileId }) {
-  const { clients, hairdressers, users } = useAppData();
+  const { clients, hairdressers, users, fetchUsers } = useAppData();
+
+  useEffect(() => {
+    if (!users) {
+      fetchUsers();
+    }
+  }, [users, fetchUsers]);
 
   if (!open) return null;
-
   const client = clients?.find((c) => String(c.Id) === String(profileId));
-  const hairdresser = hairdressers?.find((h) => String(h.Id) === String(profileId));
+  const hairdresser = hairdressers?.find(
+    (h) => String(h.Id) === String(profileId)
+  );
   const profile = client || hairdresser;
   const type = client ? "Cliente" : hairdresser ? "Peluquero" : null;
   const user = users?.find((u) => String(u.Id) === String(profile?.IdUser));
+
+  console.log("Profile:", profile);
+  console.log("Profile.IdUser:", profile?.IdUser);
+  console.log("Users:", users);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-[2px] transition-all">
@@ -49,7 +68,11 @@ export default function ProfileModal({ open, onClose, profileId }) {
               <div className="flex items-center gap-2">
                 <FiCalendar className="text-gray-500" />
                 <span className="font-medium w-32">Fecha de Registro:</span>
-                <span>{profile.FechaRegistro ? new Date(profile.FechaRegistro).toLocaleDateString() : "No disponible"}</span>
+                <span>
+                  {profile.FechaRegistro
+                    ? new Date(profile.FechaRegistro).toLocaleDateString()
+                    : "No disponible"}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <FiPhone className="text-gray-500" />
@@ -72,7 +95,7 @@ export default function ProfileModal({ open, onClose, profileId }) {
           </>
         )}
       </div>
-       <style>
+      <style>
         {`
           @keyframes modalIn {
             0% { opacity: 0; transform: scale(0.95);}
