@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { getClientByUserId } from "../../services/clients/clientService";
 import { getUsersById } from "../../services/users/usersService";
 import { User } from "lucide-react";
-
+import ClientProfileModal from "../../components/profile/ClientProfileModal";
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [client, setClient] = useState(null);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
- useEffect(() => {
   const fetchUser = async () => {
     const storedUser = localStorage.getItem("user");
 
@@ -39,8 +39,9 @@ export default function Profile() {
     }
   };
 
-  fetchUser();
-}, []); // ← solo una vez al montar el componente
+  useEffect(() => {
+    fetchUser();
+  }, []); // ← solo una vez al montar el componente
 
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>Cargando perfil...</p>;
@@ -61,7 +62,6 @@ export default function Profile() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-    
       <div className="flex-1 flex flex-col">
         <Navbar />
         <header className="flex items-center justify-between px-8 py-4 border-b bg-white">
@@ -71,6 +71,12 @@ export default function Profile() {
               Información detallada del cliente.
             </p>
           </div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm"
+          >
+            Editar Perfil
+          </button>
         </header>
         <main className="flex-1 px-8 py-6">
           <div className="bg-white border rounded-lg p-6 max-w-2xl mx-auto space-y-6 shadow-sm">
@@ -121,6 +127,11 @@ export default function Profile() {
           </div>
         </main>
       </div>
+      <ClientProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onProfileUpdate={fetchUser}
+      />
     </div>
   );
 }
