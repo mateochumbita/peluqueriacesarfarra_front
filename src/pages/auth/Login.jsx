@@ -23,8 +23,8 @@ export default function Login() {
     try {
       await login(form);
       // La redirección y guardado ya se hace en el contexto
-    } catch (err) {
-      setError(err.message || "Error al iniciar sesión");
+    } catch (errorMsg) {
+      alert("Error: " + errorMsg);
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,10 @@ export default function Login() {
 
         <p className="text-sm text-center mt-4 text-gray-600">
           ¿No tienes una cuenta?{" "}
-          <a href="/register" className="text-black hover:underline font-medium">
+          <a
+            href="/register"
+            className="text-black hover:underline font-medium"
+          >
             Regístrate
           </a>
         </p>

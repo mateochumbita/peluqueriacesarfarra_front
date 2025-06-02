@@ -12,6 +12,7 @@ import Stats from '../pages/stats/Stats'
 import Hairdressers from '../pages/hairdressers/Hairdressers'
 import ProtectedRoutes from '../components/auth/ProtectedRoutes'
 import Profile from '../pages/profile/Profile'
+import AdminRoute from '../components/auth/AdminRoute'
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 
@@ -25,40 +26,40 @@ export default function AppRouter() {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Suspense fallback={<div>Cargando dashboard...</div>}>
               <Dashboard />
             </Suspense>
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
       <Route
         path="/calendar"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Calendar />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
       <Route
         path="/appointments"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Appointments />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
       <Route
         path="/clients"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Clients />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
 
           <Route
-        path="/clients/:id"
+        path="/profile/:id"
         element={
           <ProtectedRoutes>
             <Profile />
@@ -67,29 +68,31 @@ export default function AppRouter() {
       />
 
       
+       
+      
       <Route
         path="/services"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Services />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
       <Route
         path="/hairdressers"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Hairdressers />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
 
       <Route
         path="/stats"
         element={
-          <ProtectedRoutes>
+          <AdminRoute>
             <Stats />
-          </ProtectedRoutes>
+          </AdminRoute>
         }
       />
       {/* Add more routes as needed */}

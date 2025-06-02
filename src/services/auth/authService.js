@@ -14,7 +14,8 @@ export const login = async (data) => {
   try {
     const response = await axiosInstance.post("/api/v1/auth/login", data);
     return response.data;
-  } catch (error) {
-    console.error("Error al obtener el cliente", error);
+  }catch (error) {
+    console.error("Error al obtener el cliente", error.response?.data?.msg || error.message);
+    throw error.response?.data?.msg || "Error desconocido";
   }
 };

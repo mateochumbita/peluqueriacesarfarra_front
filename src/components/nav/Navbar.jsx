@@ -1,14 +1,29 @@
-import { FaCut, FaSignOutAlt, FaSun } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { FaCut, FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login'); // Redireccionar al login
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
+
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        const parsed = JSON.parse(user);
+        setUserName(parsed.Username || "Usuario");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
 
   return (
     <nav className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white shadow-sm">
@@ -17,12 +32,15 @@ const Navbar = () => {
         <FaCut className="text-black w-4 h-4" />
         <div className="leading-tight">
           <h1 className="font-semibold text-sm">Peluquería César Farra</h1>
-          <p className="text-xs font-medium text-gray-700">Admin</p>
+          <p className="text-xs font-medium text-gray-700"></p>
         </div>
       </div>
 
-      {/* Derecha: Iconos */}
-      <div className="flex items-center space-x-2">
+      {/* Derecha: Saludo e icono de logout */}
+      <div className="flex items-center space-x-4">
+        <span className="text-sm text-black">
+          ¡Hola! {userName}
+        </span>
         <button
           className="p-2 rounded-md hover:bg-gray-100 transition"
           onClick={handleLogout}
@@ -30,10 +48,6 @@ const Navbar = () => {
         >
           <FaSignOutAlt className="w-4 h-4 text-red-500" />
         </button>
-        <button className="p-2 rounded-md hover:bg-gray-100 transition" title="Modo claro/oscuro">
-          <FaSun className="w-4 h-4" />
-        </button>
-        <div className="w-8 h-8 bg-gray-200 rounded-full" />
       </div>
     </nav>
   );

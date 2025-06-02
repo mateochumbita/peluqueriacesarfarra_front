@@ -50,3 +50,15 @@ export const deleteClients = async (id) => {
     console.error("Error al obtener el cliente:", error);
   }
 };
+
+
+
+export const getClientByUserId = async (userId) => {
+try {
+  const response = await axiosInstance.get(`/api/v1/clients/user/${userId}`);
+  return response.data;
+} catch (error) {
+  console.error("Error al obtener el cliente:", error);
+}
+
+}

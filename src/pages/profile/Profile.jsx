@@ -1,53 +1,77 @@
-import { useParams } from "react-router-dom";
-import { useAppData } from "../../context/AppDataContext";
 import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
 import { FiUser, FiMail, FiPhone, FiCalendar, FiTag } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { getClientByUserId } from "../../services/clients/clientService";
+import { getUsersById } from "../../services/users/usersService";
+import { User } from "lucide-react";
 
 export default function Profile() {
-  const { id } = useParams();
-  const { clients } = useAppData();
-  const { users } = useAppData();
+  const [user, setUser] = useState(null);
+  const [client, setClient] = useState(null);
+  const [error, setError] = useState(null);
 
-  const client = clients?.find((c) => String(c.Id) === String(id));
-  const user = users?.find((u) => String(u.Id) === String(client.IdUser));
-  console.log(user);
+ useEffect(() => {
+  const fetchUser = async () => {
+    const storedUser = localStorage.getItem("user");
 
-  if (!client) {
-    return (
-      <div className="flex min-h-screen bg-gray-50">
-        <Menu />
-        <div className="flex-1 flex flex-col">
-          <Navbar />
-          <div className="p-8">
-            <p className="text-gray-500">Cliente no encontrado.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    if (!storedUser) {
+      setError("Usuario no autenticado.");
+      return;
+    }
+
+    const parsedUser = JSON.parse(storedUser);
+    const userId = parsedUser?.Id;
+
+    if (!userId) {
+      setError("ID de usuario no encontrado.");
+      return;
+    }
+
+    try {
+      const user = await getUsersById(userId);
+      const client = await getClientByUserId(userId);
+      setUser(user);
+      setClient(client);
+    } catch (err) {
+      setError("Error al obtener el perfil.");
+      console.error(err);
+    }
+  };
+
+  fetchUser();
+}, []); // ← solo una vez al montar el componente
+
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!user) return <p>Cargando perfil...</p>;
+
+  // if (!user || !profile) {
+  //   return (
+  //     <div className="flex min-h-screen bg-gray-50">
+  //       <Menu />
+  //       <div className="flex-1 flex flex-col">
+  //         <Navbar />
+  //         <div className="p-8">
+  //           <p className="text-gray-500">Perfil no encontrado.</p>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Menu />
-
-      {/* Main content */}
+    
       <div className="flex-1 flex flex-col">
-        {/* Navbar */}
         <Navbar />
-
-        {/* Header */}
         <header className="flex items-center justify-between px-8 py-4 border-b bg-white">
           <div>
-            <h1 className="text-3xl font-bold">Perfil de Cliente</h1>
+            <h1 className="text-3xl font-bold">Perfil de {client.Nombre}</h1>
             <p className="text-gray-600 text-base">
               Información detallada del cliente.
             </p>
           </div>
         </header>
-
-        {/* Contenido */}
         <main className="flex-1 px-8 py-6">
           <div className="bg-white border rounded-lg p-6 max-w-2xl mx-auto space-y-6 shadow-sm">
             <div className="flex items-center gap-4">
@@ -56,7 +80,6 @@ export default function Profile() {
               </div>
               <div>
                 <div className="text-xl font-semibold">{client.Nombre}</div>
-                {/* <div className="text-sm text-gray-500">ID Cliente: {client.Id}</div> */}
               </div>
             </div>
 
@@ -64,27 +87,29 @@ export default function Profile() {
               <div className="flex items-center gap-2">
                 <FiUser className="text-gray-500" />
                 <span className="font-medium w-32">Username:</span>
-                <span>{user.Username || "No especificado"}</span>
+                <span>{user.Username}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FiCalendar className="text-gray-500" />
                 <span className="font-medium w-32">Fecha de Registro:</span>
                 <span>
-                  {new Date(client.FechaRegistro).toLocaleDateString()}
+                  {client.FechaRegistro
+                    ? new Date(client.FechaRegistro).toLocaleDateString()
+                    : "No disponible"}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FiPhone className="text-gray-500" />
                 <span className="font-medium w-32">Teléfono:</span>
-                <span>{client.Telefono}</span>
+                <span>{client.Telefono || "No disponible"}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FiMail className="text-gray-500" />
                 <span className="font-medium w-32">Email:</span>
-                <span>{client.Email}</span>
+                <span>{client.Email || "No disponible"}</span>
               </div>
 
               <div className="flex items-center gap-2">
