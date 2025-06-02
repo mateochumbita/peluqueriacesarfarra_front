@@ -13,6 +13,7 @@ import Hairdressers from '../pages/hairdressers/Hairdressers'
 import ProtectedRoutes from '../components/auth/ProtectedRoutes'
 import Profile from '../pages/profile/Profile'
 import AdminRoute from '../components/auth/AdminRoute'
+import DayDetail from '../pages/calendar/DayDetail'
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 
@@ -41,6 +42,16 @@ export default function AppRouter() {
           </AdminRoute>
         }
       />
+
+
+        {/* <Route
+        path="/dia/:fecha"
+        element={
+          <AdminRoute>
+            <DayDetail />
+          </AdminRoute>
+        }
+      /> */}
       <Route
         path="/appointments"
         element={
