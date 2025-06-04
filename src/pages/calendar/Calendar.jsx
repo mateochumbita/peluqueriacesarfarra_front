@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import isoWeek from "dayjs/plugin/isoWeek";
 import { useAppData } from "../../context/AppDataContext";
+import AppointmentForm from "../../components/appointments/AppointmentForm";
+dayjs.extend(isoWeek);
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [view, setView] = useState("month");
   const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
 
-  const navigate = useNavigate();
+
 
   const { appointments, fetchAppointments } = useAppData();
 
@@ -38,12 +41,13 @@ export default function Calendar() {
   };
 
   const turnos = mapAppointmentsByDate(appointments);
-  const citasDelDia = turnos[selectedDate.format("YYYY-MM-DD")] || [];
+
 
   const startOfMonth = currentDate.startOf("month");
   const endOfMonth = currentDate.endOf("month");
-  const startWeek = startOfMonth.startOf("week");
-  const endWeek = endOfMonth.endOf("week");
+
+const startWeek = startOfMonth.startOf("isoWeek");
+const endWeek = endOfMonth.endOf("isoWeek");
 
   const getEstadoClass = (estado) => {
     switch (estado) {
@@ -75,7 +79,8 @@ export default function Calendar() {
   };
 
   const getWeekDays = () => {
-    const start = currentDate.startOf("week");
+    const start = currentDate.startOf("isoWeek");
+
     return Array.from({ length: 7 }, (_, i) => start.add(i, "day"));
   };
 
@@ -99,10 +104,23 @@ export default function Calendar() {
               Gestiona tu agenda y disponibilidad.
             </p>
           </div>
-          <button className="flex items-center gap-2 bg-black text-white px-3 py-1.5 rounded hover:opacity-90 text-sm">
+          <button
+            onClick={() => setIsModalOpen(true)} // Abre el modal al hacer click en "Nueva Cita"
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm"
+          >
             <span className="hidden sm:inline">+ Nueva Cita</span>
           </button>
         </header>
+
+        
+        <AppointmentForm
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            // setEditingAppointment(null); // limpiar al cerrar
+          }}
+          // editingAppointment={editingAppointment}
+        />
 
         <main className="flex-1 p-4 sm:p-8 overflow-auto">
           <div className="bg-white rounded-lg border p-4 sm:p-6 max-w-7xl mx-auto">
@@ -193,7 +211,7 @@ export default function Calendar() {
                             className="bg-blue-100 text-blue-900 font-medium rounded px-1.5 py-0.5 text-xs leading-tight border border-blue-400 truncate"
                             title={`${cita.time} - ${cita.desc}`}
                           >
-                            ⏰ {cita.time} - {cita.desc}
+                            ⏰ {cita.time} - {cita.servicio}
                           </div>
                         ))}
                       </div>

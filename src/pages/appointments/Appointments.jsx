@@ -38,12 +38,11 @@ export default function Appointments() {
   };
 
   const showToast = (toast) => {
-  setToast(toast);
-  setTimeout(() => {
-    setToast(null);
-  }, 3000);
-};
-
+    setToast(toast);
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const handleCloseCompleteModal = () => {
     setAppointmentToComplete(null);
@@ -55,7 +54,7 @@ export default function Appointments() {
     try {
       setCompleting(true);
       await updateAppointments(appointmentToComplete.Id, { Estado: "Pagado" });
-       showToast({ type: "success", message: "Turno pagado exitosamente" });
+      showToast({ type: "success", message: "Turno pagado exitosamente" });
       setCompleting(false);
       setShowCompleteModal(false);
       setAppointmentToComplete(null);
@@ -76,13 +75,12 @@ export default function Appointments() {
     setShowCancelModal(false);
   };
 
-
   const handleConfirmCancel = async () => {
     if (!appointmentToCancel) return;
     try {
       setCancelling(true);
       await updateAppointments(appointmentToCancel.Id, { Estado: "Cancelado" });
-       showToast({ type: "success", message: "Turno cancelado exitosamente" });
+      showToast({ type: "success", message: "Turno cancelado exitosamente" });
       setCancelling(false);
       setShowCancelModal(false);
       setAppointmentToCancel(null);
@@ -114,6 +112,18 @@ export default function Appointments() {
       a.Cliente?.Nombre?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  const handleSaved = async () => {
+    await fetchAppointments(); // o el método que uses
+    setToast({
+      type: "success",
+      message: editingAppointment
+        ? "Turno editado exitosamente"
+        : "Turno creado exitosamente",
+    });
+    setTimeout(() => setToast(null), 2000);
+    setEditingAppointment(null); // si aplicable
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Menu />
@@ -141,7 +151,21 @@ export default function Appointments() {
             setEditingAppointment(null); // limpiar al cerrar
           }}
           editingAppointment={editingAppointment}
+          onSaved={handleSaved}
         />
+
+        {toast && (
+          <div
+            className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded shadow-lg transition-all
+      ${
+        toast.type === "success"
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700"
+      }`}
+          >
+            {toast.message}
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center gap-4 px-8 py-4">
           <input

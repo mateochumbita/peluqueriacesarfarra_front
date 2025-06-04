@@ -191,9 +191,7 @@ export default function Services() {
                       >
                         <FiTrash2 /> Eliminar
                       </button>
-                      <button className="p-2 hover:bg-gray-100 rounded">
-                        <FiMoreHorizontal />
-                      </button>
+                      
                     </div>
                   </div>
                 ))

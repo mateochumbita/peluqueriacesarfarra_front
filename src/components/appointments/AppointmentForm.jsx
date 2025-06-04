@@ -6,7 +6,7 @@ import {
   updateAppointments,
 } from "../../services/appointments/appointmentService";
 
-const AppointmentForm = ({ isOpen, onClose, editingAppointment }) => {
+const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
   const {
     appointments,
     fetchAppointments,
@@ -68,6 +68,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment }) => {
     fecha: "",
     hora: "",
   });
+  setToast(null);
 };
 
 const showToast = (toast) => {
@@ -148,7 +149,7 @@ const showToast = (toast) => {
         await updateAppointments(editingAppointment.Id, appointmentData);
         showToast({ type: "success", message: "Turno actualizado exitosamente" });
 
-        showToast({ type: "success", message: "Turno creado exitosamente" });
+       
       } else {
         await createAppointments(appointmentData);
         setToast({ type: "success", message: "Turno creado exitosamente" });
@@ -157,6 +158,7 @@ const showToast = (toast) => {
       fetchAppointments();
       resetForm();
       onClose();
+       if (onSaved) onSaved(); // Notifica a la página que debe recargar
     } catch (error) {
       setToast({ type: "error", message: "Error al guardar el turno." });
       console.error(error);
