@@ -26,18 +26,19 @@ export const createAppointments = async (data) => {
     console.error("Error al obtener el cliente", error);
   }
 };
-
-export const updateAppointments = async (data) => {
+// appointmentService.js
+export const updateAppointments = async (id, data) => {
   try {
-    console.log("Datos enviados al servidor:", data); // Verifica los datos enviados
+    console.log("ID del turno:", id);
+    console.log("Datos enviados al servidor:", data);
     const response = await axiosInstance.put(
-      `/api/v1/appointments/${data.Id}`,
+      `/api/v1/appointments/${id}`,
       data
     );
-    console.log("Respuesta del servidor:", response); // Inspecciona la respuesta
+    console.log("Respuesta del servidor:", response);
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar el cliente:", error.response?.data || error.message);
+    console.error("Error al actualizar el turno:", error.response?.data || error.message);
     throw error;
   }
 };

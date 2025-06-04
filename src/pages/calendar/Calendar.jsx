@@ -12,28 +12,51 @@ export default function Calendar() {
 
   const navigate = useNavigate();
 
-  const {appointments, fetchAppointments} = useAppData();
+  const { appointments, fetchAppointments } = useAppData();
 
   useEffect(() => {
     fetchAppointments();
-  }, [appointments, fetchAppointments]);
+  }, [fetchAppointments]);
 
-  console.log("Appointments:", appointments);
+  const mapAppointmentsByDate = (appointments) => {
+    if (!Array.isArray(appointments)) return {};
 
+    return appointments.reduce((acc, appt) => {
+      const dateKey = appt.Fecha;
+      const entry = {
+        time: appt.Hora?.slice(0, 5),
+        cliente: appt.Cliente?.Nombre,
+        servicio: appt.desc?.Servicio,
+        estado: appt.Estado,
+      };
 
-  const turnos = {
-    "2025-04-05": [{ time: "10:00", desc: "Corte de Pelo" }],
-    "2025-04-12": [
-      { time: "10:00", desc: "Corte de Pelo" },
-      { time: "11:30", desc: "Coloración" },
-    ],
-    "2025-04-15": [{ time: "09:00", desc: "Peinado" }],
+      if (!acc[dateKey]) acc[dateKey] = [];
+      acc[dateKey].push(entry);
+
+      return acc;
+    }, {});
   };
+
+  const turnos = mapAppointmentsByDate(appointments);
+  const citasDelDia = turnos[selectedDate.format("YYYY-MM-DD")] || [];
 
   const startOfMonth = currentDate.startOf("month");
   const endOfMonth = currentDate.endOf("month");
   const startWeek = startOfMonth.startOf("week");
   const endWeek = endOfMonth.endOf("week");
+
+  const getEstadoClass = (estado) => {
+    switch (estado) {
+      case "Reservado":
+        return "bg-gray-200 text-gray-800 border-gray-400";
+      case "Pagado":
+        return "bg-green-100 text-green-900 border-green-400";
+      case "Cancelado":
+        return "bg-red-100 text-red-900 border-red-400";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300";
+    }
+  };
 
   const generateCalendarDays = () => {
     const days = [];
@@ -139,9 +162,7 @@ export default function Calendar() {
                   return (
                     <div
                       key={`${wi}-${di}`}
-                      onClick={() =>
-                        navigate(`/dia/${day.format("YYYY-MM-DD")}`)
-                      }
+                      onClick={() => setSelectedDate(day)}
                       className={`min-h-[100px] sm:min-h-[120px] border rounded-lg p-2 relative cursor-pointer transition-all
                       ${
                         day.isSame(currentDate, "month")
@@ -181,31 +202,43 @@ export default function Calendar() {
                 })
               )}
             </div>
-
             {/* Detalle del día seleccionado */}
             <div className="mt-6 border-t pt-4">
               <h3 className="text-lg font-semibold mb-2">
                 Citas del {selectedDate.format("DD/MM/YYYY")}
               </h3>
+
               <div className="space-y-2">
-                {(turnos[selectedDate.format("YYYY-MM-DD")] || [])
-                  .length === 0 ? (
-                  <p className="text-gray-500 text-sm">
-                    No hay citas para este día.
-                  </p>
-                ) : (
-                  turnos[selectedDate.format("YYYY-MM-DD")].map(
-                    (cita, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 bg-blue-50 rounded border border-blue-200"
-                      >
-                        <p className="text-sm font-medium">⏰ {cita.time}</p>
-                        <p className="text-sm text-gray-700">{cita.desc}</p>
-                      </div>
-                    )
-                  )
-                )}
+                {(() => {
+                  const citasDelDia =
+                    turnos[selectedDate.format("YYYY-MM-DD")] || [];
+
+                  if (citasDelDia.length === 0) {
+                    return (
+                      <p className="text-gray-500 text-sm">
+                        No hay citas para este día.
+                      </p>
+                    );
+                  }
+
+                  return citasDelDia.map((cita, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-3 rounded border ${getEstadoClass(
+                        cita.estado
+                      )}`}
+                    >
+                      <p className="text-sm font-medium">⏰ {cita.time}</p>
+                      <p className="text-sm">
+                        🧑 {cita.cliente || "Sin nombre"} — 💇{" "}
+                        {cita.servicio || "Servicio no especificado"}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Estado: {cita.estado}
+                      </p>
+                    </div>
+                  ));
+                })()}
               </div>
             </div>
           </div>
