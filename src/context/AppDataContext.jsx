@@ -7,6 +7,9 @@ import { getAllHairdressersServices } from "../services/hairdressers_services/ha
 import { getAllProfiles } from "../services/profiles/profilesService";
 import { getAllServices } from "../services/services/servicesService";
 import { getAllUsers } from "../services/users/usersService";
+import { getAllAppointmentsStats } from "../services/stats/appointmentsStatsService";
+import { getAllClientesStats } from "../services/stats/clientStatsService";
+import { getAllEarningsStats } from "../services/stats/earningsStats";
 
 const AppDataContext = createContext();
 
@@ -19,12 +22,27 @@ export function AppDataProvider({ children }) {
   const [profiles, setProfiles] = useState(null);
   const [services, setServices] = useState(null);
   const [users, setUsers] = useState(null);
+  const [appointmentsStats, setAppointmentsStats] = useState(null);
+  const [clientsStats, setClientsStats] = useState(null);
+  const [earningsStats, setEarningsStats] = useState(null);
 
   // Solo funciones para cargar los datos desde componentes
   const fetchAppointments = async () => {
     const res = await getAllAppointments();
     setAppointments(res?.supabaseResults || []);
   };
+  const fetchAppointmentsStats = async () => {
+    const res = await getAllAppointmentsStats();
+    setAppointmentsStats(res || []);
+  }
+  const fetchClientsStats = async () => {
+    const res = await getAllClientesStats();
+    setClientsStats(res || []);
+  }
+  const fetchEarningsStats = async () => {
+    const res = await getAllEarningsStats();
+    setEarningsStats(res || []);
+  }
 
   const fetchClients = async () => {
     const res = await getAllClientes();
@@ -76,6 +94,9 @@ export function AppDataProvider({ children }) {
         profiles, setProfiles, fetchProfiles,
         services, setServices, fetchServices,
         users, setUsers, fetchUsers,
+        appointmentsStats, setAppointmentsStats, fetchAppointmentsStats,
+        clientsStats, setClientsStats, fetchClientsStats,
+        earningsStats, setEarningsStats, fetchEarningsStats
       }}
     >
       {children}
