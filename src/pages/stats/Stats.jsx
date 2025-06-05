@@ -4,7 +4,7 @@ import Navbar from "../../components/nav/Navbar";
 import { FiCalendar } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
 import BarChart from "../../components/stats/BarChart";
-
+import LineChart from "../../components/stats/LineChart";
 const TABS = ["Ingresos", "Turnos", "Clientes"];
 
 export default function Stats() {
@@ -147,12 +147,7 @@ export default function Stats() {
                   <p className="text-gray-500 mb-4">
                     Evolución de ingresos en los últimos 6 meses
                   </p>
-                  <LineChart
-                    data={earningsStats.tendencia6Meses.map((item) => ({
-                      label: item.mes,
-                      value: item.total,
-                    }))}
-                  />
+                  <LineChart data={earningsStats.tendencia6Meses} />
                 </div>
               </div>
             </>
@@ -309,36 +304,3 @@ function Card({ title, value, desc }) {
 // }
 
 // Gráfico de líneas simple SVG
-function LineChart({ data }) {
-  if (data.length < 2) {
-    return (
-      <div className="text-center text-gray-400">No hay suficientes datos</div>
-    );
-  }
-
-  const width = 400;
-  const height = 200;
-  const padding = 20;
-
-  const maxY = Math.max(...data.map((d) => d.value));
-  const stepX = (width - 2 * padding) / (data.length - 1);
-
-  const points = data.map((d, i) => {
-    const x = padding + i * stepX;
-    const y = height - padding - (d.value / maxY) * (height - 2 * padding);
-    return { x, y };
-  });
-
-  const path = points
-    .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
-    .join(" ");
-
-  return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-48">
-      <path d={path} fill="none" stroke="blue" strokeWidth="2" />
-      {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="3" fill="blue" />
-      ))}
-    </svg>
-  );
-}
