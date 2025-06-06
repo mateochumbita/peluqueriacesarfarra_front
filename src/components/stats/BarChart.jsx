@@ -14,7 +14,7 @@ import { Bar } from "react-chartjs-2";
 // Registrar los componentes necesarios de Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = ({ data }) => {
+const BarChart = ({ data, title, label, formatAsCurrency = false }) => {
   // Preparar las etiquetas y los datos para el gráfico
   const labels = data.map((item) => item.label);
   const values = data.map((item) => item.value);
@@ -24,7 +24,7 @@ const BarChart = ({ data }) => {
     labels,
     datasets: [
       {
-        label: "Ingresos",
+        label: label,
         data: values,
         backgroundColor: "rgba(59, 130, 246, 0.5)", // Azul con opacidad
         borderColor: "rgba(59, 130, 246, 1)", // Azul sólido
@@ -42,7 +42,7 @@ const BarChart = ({ data }) => {
       },
       title: {
         display: true,
-        text: "Ingresos por Día",
+        text: title,
       },
     },
     scales: {
@@ -51,7 +51,9 @@ const BarChart = ({ data }) => {
         ticks: {
           // Formatear los valores del eje Y como moneda
           callback: function (value) {
-            return `$${value.toLocaleString()}`;
+             return formatAsCurrency
+              ? `$${value.toLocaleString()}`
+              : value.toLocaleString();
           },
         },
       },

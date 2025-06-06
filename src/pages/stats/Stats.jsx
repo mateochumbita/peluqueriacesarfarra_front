@@ -10,7 +10,6 @@ const TABS = ["Ingresos", "Turnos", "Clientes"];
 export default function Stats() {
   const [tab, setTab] = useState("Ingresos");
 
-
   const {
     earningsStats,
     fetchEarningsStats,
@@ -19,7 +18,7 @@ export default function Stats() {
     appointmentsStats,
     fetchAppointmentsStats,
   } = useAppData();
-    const loading = !earningsStats || !clientsStats || !appointmentsStats;
+  const loading = !earningsStats || !clientsStats || !appointmentsStats;
 
   useEffect(() => {
     if (!earningsStats) {
@@ -40,20 +39,7 @@ export default function Stats() {
     fetchEarningsStats,
   ]);
 
-  console.log("clientsStats", clientsStats);
   console.log("appointmentsStats", appointmentsStats);
-  console.log("earningsStats", earningsStats);
-
-  // Puedes reemplazar estos datos por tus datos reales
-
-  // const turnos = {
-  //   total: 124,
-  //   ocupacion: 86,
-  //   cancelaciones: 8,
-  //   masOcupado: "Sábado",
-  //   masOcupadoTurnos: 32,
-  //   distribucion: [24, 15, 19, 28, 32, 36, 10],
-  // };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -147,6 +133,9 @@ export default function Stats() {
                           Distribución de ingresos diarios este mes
                         </p>
                         <BarChart
+                          title={"Ingresos por Día"}
+                          formatAsCurrency
+                          label="Ingresos"
                           data={earningsStats.ingresosPorDia.map((item) => ({
                             label: item.dia,
                             value: Number(item.total),
@@ -209,7 +198,14 @@ export default function Stats() {
                     <p className="text-gray-500 mb-4">
                       Distribución de Turnos por día de la semana
                     </p>
-                    {/* <BarChart data={turnos.distribucion} /> */}
+                    <BarChart
+                      label={"Turnos"}
+                      title={"Turnos por Día"}
+                      data={appointmentsStats.turnosPorDia.map((item) => ({
+                        label: item.dia,
+                        value: Number(item.cantidad),
+                      }))}
+                    />
                   </div>
                 </>
               )}
@@ -286,7 +282,6 @@ export default function Stats() {
   );
 }
 
-// Card para los KPIs
 function Card({ title, value, desc }) {
   return (
     <div className="bg-white rounded-lg border p-6 flex flex-col justify-between min-h-[110px]">
@@ -296,29 +291,3 @@ function Card({ title, value, desc }) {
     </div>
   );
 }
-
-// Gráfico de barras simple SVG
-// function BarChart({ data }) {
-//   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
-//   const max = values.length > 0 ? Math.max(...values) : 1;
-
-//   return (
-//     <div className="flex items-end gap-4 h-64 w-full">
-//       {data.map((item, i) => (
-//         <div key={i} className="flex flex-col items-center flex-1">
-//           <div
-//             className="bg-blue-600 rounded-t w-6 transition-all duration-500"
-//             style={{
-//               height: `${(item.value / max) * 100}%`,
-//               minHeight: "4px",
-//             }}
-//             title={`${item.value}`}
-//           />
-//           <div className="text-xs text-center mt-2">{item.label}</div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// Gráfico de líneas simple SVG

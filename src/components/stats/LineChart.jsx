@@ -7,6 +7,9 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import CustomTooltip from "./CustomToolTip";
+
+
 
 // Componente generalizado con transformación incluida
 export default function LineChart({ data }) {
@@ -22,7 +25,8 @@ export default function LineChart({ data }) {
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <XAxis dataKey="label" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
+
           <Line type="monotone" dataKey="value" stroke="#2563eb" dot />
         </RechartsLineChart>
       </ResponsiveContainer>
