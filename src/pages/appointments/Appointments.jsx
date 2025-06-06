@@ -9,7 +9,7 @@ import { updateAppointments } from "../../services/appointments/appointmentServi
 import isInRange from "../../utils/dateRangerFilter";
 
 export default function Appointments() {
-  const { appointments, fetchAppointments } = useAppData();
+  const { appointments, fetchAppointments, fetchAppointmentsStats, fetchEarningsStats } = useAppData();
 
   const [estadoSeleccionado, setEstadoSeleccionado] = useState("Todos");
   const [rangoFecha, setRangoFecha] = useState("Esta semana");
@@ -54,6 +54,7 @@ export default function Appointments() {
     try {
       setCompleting(true);
       await updateAppointments(appointmentToComplete.Id, { Estado: "Pagado" });
+      await fetchEarningsStats();
       showToast({ type: "success", message: "Turno pagado exitosamente" });
       setCompleting(false);
       setShowCompleteModal(false);
@@ -80,6 +81,7 @@ export default function Appointments() {
     try {
       setCancelling(true);
       await updateAppointments(appointmentToCancel.Id, { Estado: "Cancelado" });
+      await fetchAppointmentsStats();
       showToast({ type: "success", message: "Turno cancelado exitosamente" });
       setCancelling(false);
       setShowCancelModal(false);

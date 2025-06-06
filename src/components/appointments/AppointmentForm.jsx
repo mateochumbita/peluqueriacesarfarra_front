@@ -14,6 +14,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     fetchClients,
     fetchHairdressersServices,
     hairdressersServices,
+    fetchAppointmentsStats
   } = useAppData();
   const hairdressersWithServices = hairdressersServices
     ? Array.from(
@@ -152,6 +153,7 @@ const showToast = (toast) => {
        
       } else {
         await createAppointments(appointmentData);
+        await fetchAppointmentsStats();
         setToast({ type: "success", message: "Turno creado exitosamente" });
       }
 

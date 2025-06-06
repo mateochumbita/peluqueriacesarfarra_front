@@ -6,7 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
 
 export default function ClientForm({ open, onClose, client }) {
-  const { fetchClients, fetchUsers } = useAppData();
+  const { fetchClients, fetchUsers, fetchClientsStats } = useAppData();
 
   const [form, setForm] = useState({
     username: "",
@@ -97,6 +97,7 @@ export default function ClientForm({ open, onClose, client }) {
           telefono: form.telefono,
           email: form.email,
         });
+        await fetchClientsStats();
         setToast({ type: "success", message: "Cliente creado exitosamente" });
       } else {
         // EDITAR CLIENTE
