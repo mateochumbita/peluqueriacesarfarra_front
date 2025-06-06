@@ -49,12 +49,12 @@ export default function Stats() {
 
         {/* Filtros */}
         <div className="flex flex-wrap gap-4 px-8 pt-8 pb-4">
-          <select className="border rounded px-3 py-2 text-sm">
+          {/* <select className="border rounded px-3 py-2 text-sm">
             <option>Este mes</option>
-            <option>Este año</option>
-          </select>
+           
+          </select> */}
           <button className="flex items-center gap-2 border px-4 py-2 rounded text-sm hover:bg-gray-100">
-            <FiCalendar /> Rango de fechas
+            <FiCalendar /> Estadísticas de este mes
           </button>
         </div>
 

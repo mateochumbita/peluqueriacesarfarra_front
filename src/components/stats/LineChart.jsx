@@ -7,7 +7,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import CustomTooltip from "./CustomToolTip";
+import CustomTooltip from "./CustomTooltip";
 
 
 

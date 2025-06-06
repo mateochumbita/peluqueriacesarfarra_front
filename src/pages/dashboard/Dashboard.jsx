@@ -1,7 +1,22 @@
+import { useEffect } from 'react';
 import Menu from '../../components/nav/Menu';
 import Navbar from '../../components/nav/Navbar';
+import { useAppData } from "../../context/AppDataContext";
 
 export default function Dashboard() {
+
+  const {appointmentsStats, fetchAppointmentsStats} = useAppData();
+
+
+  useEffect(() => {
+    // Fetch appointments stats when the component mounts
+    fetchAppointmentsStats();
+  }, [fetchAppointmentsStats, appointmentsStats]);
+
+
+  console.log("appointmentsStats",appointmentsStats);
+
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -37,7 +52,7 @@ export default function Dashboard() {
                 <path d="M16 2v4M8 2v4M3 10h18" />
               </svg>
             </div>
-            <div className="text-2xl font-bold">8</div>
+            <div className="text-2xl font-bold">{appointmentsStats?.turnos.hoy}</div>
             <div className="text-xs text-green-600">+2.5% respecto a ayer</div>
           </div>
           <div className="bg-white rounded-lg p-4 border flex flex-col gap-1">
