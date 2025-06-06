@@ -5,13 +5,20 @@ import { useAppData } from "../../context/AppDataContext";
 
 export default function Dashboard() {
 
-  const {appointmentsStats, fetchAppointmentsStats} = useAppData();
+  const {appointmentsStats, fetchAppointmentsStats, fetchEarningsStats, earningsStats, fetchClientsStats, clientsStats} = useAppData();
 
 
   useEffect(() => {
-    // Fetch appointments stats when the component mounts
-    fetchAppointmentsStats();
-  }, [fetchAppointmentsStats, appointmentsStats]);
+    if(!appointmentsStats) {
+      fetchAppointmentsStats();
+    }
+    if(!earningsStats) {
+      fetchEarningsStats();
+    }
+    if(!clientsStats) {
+      fetchClientsStats();
+    }
+  }, [fetchAppointmentsStats, appointmentsStats, fetchEarningsStats, earningsStats, fetchClientsStats, clientsStats]);
 
 
   console.log("appointmentsStats",appointmentsStats);
@@ -53,19 +60,19 @@ export default function Dashboard() {
               </svg>
             </div>
             <div className="text-2xl font-bold">{appointmentsStats?.turnos.hoy}</div>
-            <div className="text-xs text-green-600">+2.5% respecto a ayer</div>
+            <div className="text-xs text-green-600">Tasa de Ocupación hoy {appointmentsStats?.tasaOcupacion.hoy}%</div>
           </div>
           <div className="bg-white rounded-lg p-4 border flex flex-col gap-1">
             <div className="flex items-center justify-between">
               <span className="font-medium text-gray-700">Ingresos Hoy</span>
               <span className="text-gray-400">$</span>
             </div>
-            <div className="text-2xl font-bold">$320</div>
-            <div className="text-xs text-green-600">+18.2% respecto a ayer</div>
+            <div className="text-2xl font-bold">{earningsStats?.ingresos.hoy}</div>
+            <div className="text-xs text-green-600">+{}</div>
           </div>
           <div className="bg-white rounded-lg p-4 border flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-700">Clientes Totales</span>
+              <span className="font-medium text-gray-700">Clientes Totales Mes</span>
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
@@ -73,18 +80,18 @@ export default function Dashboard() {
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
             </div>
-            <div className="text-2xl font-bold">245</div>
-            <div className="text-xs text-green-600">+4 nuevos esta semana</div>
+            <div className="text-2xl font-bold">{clientsStats?.clientes.mes}</div>
+            <div className="text-xs text-green-600">+{clientsStats?.clientes.semana} esta semana</div>
           </div>
           <div className="bg-white rounded-lg p-4 border flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-700">Tasa de Ocupación</span>
+              <span className="font-medium text-gray-700">Tasa de Ocupación este Mes</span>
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M3 17l6-6 4 4 8-8" />
               </svg>
             </div>
-            <div className="text-2xl font-bold">86%</div>
-            <div className="text-xs text-green-600">+2.1% respecto a la semana pasada</div>
+            <div className="text-2xl font-bold">{appointmentsStats?.tasaOcupacion.mes}</div>
+            <div className="text-xs text-green-600">+{appointmentsStats?.tasaOcupacion.variacionMes} con respecto al mes anterior</div>
           </div>
         </section>
 
@@ -119,7 +126,7 @@ export default function Dashboard() {
           {/* Próximos Turnos */}
           <div className="w-full lg:w-1/3 bg-white rounded-lg border p-4">
             <h2 className="font-bold text-xl mb-2">Próximos Turnos</h2>
-            <p className="text-gray-600 text-sm mb-4">Tienes 8 Turnos programadas para hoy.</p>
+            <p className="text-gray-600 text-sm mb-4">Tienes {appointmentsStats?.turnos.hoy} Turnos programadas para hoy.</p>
             <ul className="space-y-3">
               <li className="flex items-center justify-between">
                 <div>
