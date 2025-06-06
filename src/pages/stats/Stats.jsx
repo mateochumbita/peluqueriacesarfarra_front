@@ -6,6 +6,7 @@ import { useAppData } from "../../context/AppDataContext";
 import BarChart from "../../components/stats/BarChart";
 import LineChart from "../../components/stats/LineChart";
 const TABS = ["Ingresos", "Turnos", "Clientes"];
+import Card from "../../components/common/Card";
 
 export default function Stats() {
   const [tab, setTab] = useState("Ingresos");
@@ -46,20 +47,17 @@ export default function Stats() {
       <Menu />
       <div className="flex-1 flex flex-col">
         <Navbar />
-
-        {/* Filtros */}
-        <div className="flex flex-wrap gap-4 px-8 pt-8 pb-4">
-          {/* <select className="border rounded px-3 py-2 text-sm">
-            <option>Este mes</option>
-           
-          </select> */}
-          <button className="flex items-center gap-2 border px-4 py-2 rounded text-sm hover:bg-gray-100">
-            <FiCalendar /> Estadísticas de este mes
-          </button>
-        </div>
+        <header className="flex items-center justify-between px-8 py-4 border-b bg-white">
+          <div>
+            <h1 className="text-3xl font-bold">Estadísticas</h1>
+            <p className="text-gray-600 text-base">
+              Accede a la información clave de tu negocio
+            </p>
+          </div>
+        </header>
 
         {/* Tabs */}
-        <div className="flex gap-2 px-8 mb-4">
+        <div className="flex gap-2 px-8  pt-8 mb-4">
           {TABS.map((t) => (
             <button
               key={t}
@@ -282,12 +280,4 @@ export default function Stats() {
   );
 }
 
-function Card({ title, value, desc }) {
-  return (
-    <div className="bg-white rounded-lg border p-6 flex flex-col justify-between min-h-[110px]">
-      <div className="text-gray-600 text-sm mb-1">{title}</div>
-      <div className="text-2xl font-bold mb-1">{value}</div>
-      <div className="text-gray-500 text-xs">{desc}</div>
-    </div>
-  );
-}
+
