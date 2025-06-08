@@ -136,7 +136,7 @@ export default function Hairdressers() {
           <input
             type="text"
             placeholder="Buscar peluqueros..."
-            className="border rounded px-4 py-2 text-sm w-64"
+            className="border rounded px-4 py-2 text-sm w-full sm:w-64"
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -153,15 +153,16 @@ export default function Hairdressers() {
               filteredHairdressers.map((h) => (
                 <div
                   key={h.Id}
-                  className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
+                  className="relative flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-xl">
+                  {/* Datos del peluquero */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-xl self-start sm:self-center">
                       <FiUser size={24} />
                     </div>
                     <div>
                       <div className="font-bold text-lg">{h.Nombre}</div>
-                      <div className="flex items-center gap-4 text-gray-500 text-sm mt-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-gray-500 text-sm mt-1">
                         <span className="flex items-center gap-1">
                           <FiMail /> {h.Email}
                         </span>
@@ -175,27 +176,29 @@ export default function Hairdressers() {
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
+                  {/* Acciones */}
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center self-end sm:self-center">
                     <button
-                      className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center gap-1"
+                      className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center gap-1 justify-center"
                       onClick={() => handleEditHairdresser(h)}
                     >
                       <FiEdit2 /> Editar
                     </button>
                     <button
-                      className="border px-3 py-1 rounded hover:bg-gray-100 text-sm inline-flex items-center"
+                      className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center justify-center"
                       onClick={() => handleViewProfile(h.Id)}
                     >
                       Ver Perfil
                     </button>
                     <button
-                      className="p-2 hover:bg-gray-100 rounded"
+                      className="p-2 hover:bg-gray-100 rounded self-center"
                       onClick={() => toggleMenu(h.Id)}
                     >
                       <FiMoreHorizontal />
                     </button>
+
                     {menuHairdresserId === h.Id && (
-                      <div className="absolute right-0 mt-10 w-32 bg-white border rounded shadow-lg z-10">
+                      <div className="absolute right-0 top-full mt-2 w-32 bg-white border rounded shadow-lg z-10">
                         <button
                           className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
                           onClick={() => handleOpenDeleteModal(h)}
