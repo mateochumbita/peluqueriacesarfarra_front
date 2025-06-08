@@ -9,11 +9,9 @@ dayjs.extend(isoWeek);
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const [view, setView] = useState("month");
+  const [view, setView] = useState("week");
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
-
-
 
   const { appointments, fetchAppointments } = useAppData();
 
@@ -42,12 +40,11 @@ export default function Calendar() {
 
   const turnos = mapAppointmentsByDate(appointments);
 
-
   const startOfMonth = currentDate.startOf("month");
   const endOfMonth = currentDate.endOf("month");
 
-const startWeek = startOfMonth.startOf("isoWeek");
-const endWeek = endOfMonth.endOf("isoWeek");
+  const startWeek = startOfMonth.startOf("isoWeek");
+  const endWeek = endOfMonth.endOf("isoWeek");
 
   const getEstadoClass = (estado) => {
     switch (estado) {
@@ -105,14 +102,14 @@ const endWeek = endOfMonth.endOf("isoWeek");
             </p>
           </div>
           <button
-            onClick={() => setIsModalOpen(true)} // Abre el modal al hacer click en "Nueva Cita"
-            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 bg-black text-white px-3 py-2 rounded hover:opacity-90 text-sm whitespace-nowrap"
           >
+            <span className="sm:hidden text-lg">＋</span>
             <span className="hidden sm:inline">+ Nueva Cita</span>
           </button>
         </header>
 
-        
         <AppointmentForm
           isOpen={isModalOpen}
           onClose={() => {
