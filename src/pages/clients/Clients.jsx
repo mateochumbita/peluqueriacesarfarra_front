@@ -78,7 +78,6 @@ export default function Clients() {
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-
   const filteredClients = clientList.filter((c) =>
     normalizeText(`${c.Nombre} ${c.Dni}`).includes(normalizeText(searchTerm))
   );
@@ -128,14 +127,14 @@ export default function Clients() {
           <input
             type="text"
             placeholder="Buscar por nombre o DNI..."
-            className="border rounded px-4 py-2 text-sm w-64"
+            className="border rounded px-4 py-2 text-sm w-full sm:w-64"
             value={searchTerm}
             onChange={handleSearchChange}
           />
         </div>
 
         {/* Lista */}
-        <main className="flex-1 px-8 pb-8">
+        <main className="flex-1 px-4 sm:px-8 pb-8 w-full overflow-x-auto">
           <div className="bg-white rounded-lg border p-4 space-y-4">
             {loading ? (
               <div className="text-center text-gray-500 py-8">
@@ -145,16 +144,18 @@ export default function Clients() {
               filteredClients.map((c) => (
                 <div
                   key={c.Id}
-                  className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
+                  className="relative w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-xl">
                       <FiUser size={24} />
                     </div>
                     <div>
-                      <div className="font-bold text-lg">{c.Nombre}</div>
+                      <div className="font-bold text-lg break-words">
+                        {c.Nombre}
+                      </div>
                       <div className="flex items-center gap-4 text-gray-500 text-sm mt-1">
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 break-all">
                           <FiMail /> {c.Email}
                         </span>
                         <span className="flex items-center gap-1">
@@ -167,12 +168,11 @@ export default function Clients() {
                     </div>
                   </div>
 
-                  <div className="text-right text-sm text-gray-700 min-w-[120px]">
-                    Registrado:{" "}
-                    {new Date(c.FechaRegistro).toLocaleDateString()}
+                  <div className="text-right text-sm text-gray-700 min-w-0 sm:min-w-[120px] break-words">
+                    Registrado: {new Date(c.FechaRegistro).toLocaleDateString()}
                   </div>
 
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap justify-end sm:justify-start">
                     <button
                       className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center gap-1"
                       onClick={() => {
@@ -245,8 +245,8 @@ export default function Clients() {
           <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-sm text-center animate-[modalIn_0.2s_ease]">
             <h3 className="text-lg font-bold mb-2">¿Eliminar cliente?</h3>
             <p className="mb-6 text-gray-600">
-              ¿Estás seguro que deseas eliminar{" "}
-              <b>{deletingClient?.Nombre}</b>? Esta acción no se puede deshacer.
+              ¿Estás seguro que deseas eliminar <b>{deletingClient?.Nombre}</b>?
+              Esta acción no se puede deshacer.
             </p>
             <div className="flex justify-center gap-4">
               <button
