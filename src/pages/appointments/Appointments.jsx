@@ -9,7 +9,12 @@ import { updateAppointments } from "../../services/appointments/appointmentServi
 import isInRange from "../../utils/dateRangerFilter";
 
 export default function Appointments() {
-  const { appointments, fetchAppointments, fetchAppointmentsStats, fetchEarningsStats } = useAppData();
+  const {
+    appointments,
+    fetchAppointments,
+    fetchAppointmentsStats,
+    fetchEarningsStats,
+  } = useAppData();
 
   const [estadoSeleccionado, setEstadoSeleccionado] = useState("Todos");
   const [rangoFecha, setRangoFecha] = useState("Esta semana");
@@ -139,9 +144,10 @@ export default function Appointments() {
             </p>
           </div>
           <button
-            onClick={() => setIsModalOpen(true)} // Abre el modal al hacer click en "Nueva Cita"
-            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 bg-black text-white px-3 py-2 rounded hover:opacity-90 text-sm whitespace-nowrap"
           >
+            <span className="sm:hidden text-lg">＋</span>
             <span className="hidden sm:inline">+ Nueva Cita</span>
           </button>
         </header>

@@ -145,7 +145,7 @@ export default function Clients() {
               filteredClients.map((c) => (
                 <div
                   key={c.Id}
-                  className="relative flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
+                  className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-4 last:border-b-0 last:pb-0"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-xl">
