@@ -14,6 +14,7 @@ import ProtectedRoutes from '../components/auth/ProtectedRoutes'
 import Profile from '../pages/profile/Profile'
 import AdminRoute from '../components/auth/AdminRoute'
 import DayDetail from '../pages/calendar/DayDetail'
+import About from '../pages/about/About'
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 
@@ -32,6 +33,13 @@ export default function AppRouter() {
               <Dashboard />
             </Suspense>
           </AdminRoute>
+        }
+      />
+       <Route
+        path="/about"
+        element={
+         
+           <About />
         }
       />
       <Route
