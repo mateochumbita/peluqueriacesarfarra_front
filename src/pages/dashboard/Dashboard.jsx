@@ -33,6 +33,7 @@ export default function Dashboard() {
   ]);
 
   console.log("appointmentsStats", appointmentsStats);
+  const nombre = localStorage.getItem("nombreUsuario");
 
   const isLoading = !appointmentsStats || !earningsStats || !clientsStats;
 
@@ -62,7 +63,7 @@ export default function Dashboard() {
           <div>
             <h1 className="text-2xl font-bold">Panel Principal</h1>
             <p className="text-gray-600 text-sm">
-              Bienvenido de nuevo, Carlos. Aquí está el resumen de tu negocio.
+              Bienvenido de nuevo, {nombre}. Aquí está el resumen de tu negocio.
             </p>
           </div>
           <button className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm">

@@ -10,6 +10,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
     navigate("/login");
   };
+    const nombre = localStorage.getItem("nombreUsuario");
 
   const [userName, setUserName] = useState("");
 
@@ -39,7 +40,7 @@ const Navbar = () => {
       {/* Derecha: Saludo e icono de logout */}
       <div className="flex items-center space-x-4">
         <span className="text-sm text-black">
-          ¡Hola! {userName}
+          ¡Hola! {nombre}
         </span>
         <button
           className="p-2 rounded-md hover:bg-gray-100 transition"
