@@ -24,7 +24,7 @@ export default function Login() {
     try {
       await login(form);
     } catch (errorMsg) {
-      alert("Error: " + errorMsg);
+      setError("Credenciales inválidas. Intenta nuevamente.", errorMsg);
     } finally {
       setLoading(false);
     }
@@ -89,6 +89,9 @@ export default function Login() {
           >
             {loading ? "Ingresando..." : "Iniciar sesión"}
           </button>
+
+
+      
         </form>
 
         <p className="text-sm text-center mt-4 text-gray-600">

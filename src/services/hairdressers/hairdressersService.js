@@ -50,3 +50,14 @@ export const deleteHairdressers = async (id) => {
     console.error("Error al obtener el cliente:", error);
   }
 };
+
+export const getHaidresserByUserId = async (userId) => {
+try {
+  const response = await axiosInstance.get(`/api/v1/hairdressers/user/${userId}`);
+  return response.data;
+} catch (error) {
+  console.error("Error al obtener el cliente:", error);
+}
+
+}
+
