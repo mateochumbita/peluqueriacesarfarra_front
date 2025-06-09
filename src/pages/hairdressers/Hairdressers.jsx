@@ -177,7 +177,8 @@ export default function Hairdressers() {
                   </div>
 
                   {/* Acciones */}
-                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center self-end sm:self-center">
+                  <div className="flex flex-row flex-wrap items-center gap-2 self-end sm:self-center">
+
                     <button
                       className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center gap-1 justify-center"
                       onClick={() => handleEditHairdresser(h)}
