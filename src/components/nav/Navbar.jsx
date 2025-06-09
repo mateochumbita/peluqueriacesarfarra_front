@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { FaCut, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -12,19 +11,6 @@ const Navbar = () => {
   };
     const nombre = localStorage.getItem("nombreUsuario");
 
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      try {
-        const parsed = JSON.parse(user);
-        setUserName(parsed.Username || "Usuario");
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, []);
 
   return (
     <nav className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white shadow-sm">
