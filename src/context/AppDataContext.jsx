@@ -16,6 +16,7 @@ const AppDataContext = createContext();
 
 export function AppDataProvider({ children }) {
   const [appointments, setAppointments] = useState(null);
+  const [appointmentsDays, setAppointmentsDays] = useState(null);
   const [clients, setClients] = useState(null);
   const [earnings, setEarnings] = useState(null);
   const [hairdressers, setHairdressers] = useState(null);
@@ -35,7 +36,7 @@ export function AppDataProvider({ children }) {
 
   const fetchAppointmentsDays = async () => {
     const res = await getAllAppointmentsDays();
-    setAppointments(res?.supabaseResults || []);
+    setAppointmentsDays(res?.supabaseResults || []);
   }
   const fetchAppointmentsStats = async () => {
     const res = await getAllAppointmentsStats();
@@ -93,7 +94,8 @@ export function AppDataProvider({ children }) {
     <AppDataContext.Provider
       value={{
         appointments, setAppointments, fetchAppointments,
-        fetchAppointmentsDays,
+        fetchAppointmentsDays,        
+        appointmentsDays,setAppointmentsDays,
         clients, setClients, fetchClients,
         earnings, setEarnings, fetchEarnings,
         hairdressers, setHairdressers, fetchHairdressers,

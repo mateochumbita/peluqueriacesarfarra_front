@@ -14,7 +14,7 @@ export default function Dashboard() {
     fetchClientsStats,
     clientsStats,
     fetchAppointmentsDays,
-    appointments,
+    appointmentsDays,
   } = useAppData();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Dashboard() {
     if (!clientsStats) {
       fetchClientsStats();
     }
-    if (!appointments) {
+    if (!appointmentsDays) {
       fetchAppointmentsDays();
     }
   }, [
@@ -38,11 +38,11 @@ export default function Dashboard() {
     fetchClientsStats,
     clientsStats,
     fetchAppointmentsDays,
-    appointments,
+    appointmentsDays,
   ]);
 
   console.log("appointmentsStats", appointmentsStats);
-  console.log("fetchAppointmentsDays", appointments);
+  console.log("fetchAppointmentsDays", appointmentsDays);
   const nombre = localStorage.getItem("nombreUsuario");
 
   const isLoading = !appointmentsStats || !earningsStats || !clientsStats;
@@ -185,12 +185,12 @@ export default function Dashboard() {
           <div className="w-full lg:w-1/3 bg-white rounded-lg border p-4">
             <h2 className="font-bold text-xl mb-2">Próximos Turnos</h2>
             <p className="text-gray-600 text-sm mb-4">
-              Tienes {appointmentsStats?.turnos.hoy} turnos programados para
+              Tienes {appointmentsDays.length} turnos programados para
               hoy.
             </p>
             <ul className="space-y-3">
-              {appointments && appointments.length > 0 ? (
-                appointments.slice(0, 3).map((turno) => (
+              {appointmentsDays && appointmentsDays.length > 0 ? (
+                appointmentsDays.slice(0, 3).map((turno) => (
                   <li
                     key={turno.Id}
                     className="flex items-center justify-between"
