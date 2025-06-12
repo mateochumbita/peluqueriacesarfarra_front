@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { getAllAppointments } from "../services/appointments/appointmentService";
+import { getAllAppointments, getAllAppointmentsDays } from "../services/appointments/appointmentService";
+
 import { getAllClientes } from "../services/clients/clientService";
 import { getAllEarnings } from "../services/earnings/earningService";
 import { getAllHairdressers } from "../services/hairdressers/hairdressersService";
@@ -31,6 +32,11 @@ export function AppDataProvider({ children }) {
     const res = await getAllAppointments();
     setAppointments(res?.supabaseResults || []);
   };
+
+  const fetchAppointmentsDays = async () => {
+    const res = await getAllAppointmentsDays();
+    setAppointments(res?.supabaseResults || []);
+  }
   const fetchAppointmentsStats = async () => {
     const res = await getAllAppointmentsStats();
     setAppointmentsStats(res || []);
@@ -87,6 +93,7 @@ export function AppDataProvider({ children }) {
     <AppDataContext.Provider
       value={{
         appointments, setAppointments, fetchAppointments,
+        fetchAppointmentsDays,
         clients, setClients, fetchClients,
         earnings, setEarnings, fetchEarnings,
         hairdressers, setHairdressers, fetchHairdressers,
