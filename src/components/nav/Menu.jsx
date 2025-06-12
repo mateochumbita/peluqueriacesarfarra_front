@@ -1,38 +1,42 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FiHome,
   FiCalendar,
   FiClock,
   FiUsers,
   FiScissors,
-  FiMessageSquare,
-  FiFileText,
   FiBarChart2,
-  FiSettings,
   FiMenu,
   FiX,
+  FiLogOut
 } from "react-icons/fi";
-// Si quieres un icono diferente, descomenta la siguiente línea:
-import { FaUserTie } from "react-icons/fa"; // <-- Importa el icono
+import { FaUserTie } from "react-icons/fa";
+
 const menuItems = [
   { icon: <FiHome />, label: "Panel Principal", path: "/dashboard" },
   { icon: <FiCalendar />, label: "Calendario", path: "/calendar" },
   { icon: <FiClock />, label: "Turnos", path: "/appointments" },
   { icon: <FiUsers />, label: "Clientes", path: "/clients" },
   { icon: <FiScissors />, label: "Servicios", path: "/services" },
-  { icon: <FaUserTie />, label: "Peluqueros", path: "/hairdressers" }, // <-- Nuevo ítem
-  // Si prefieres otro icono, usa: { icon: <FaUserTie />, label: "Peluqueros", path: "/hairdressers" },
+  { icon: <FaUserTie />, label: "Peluqueros", path: "/hairdressers" },
   { icon: <FiBarChart2 />, label: "Estadísticas", path: "/stats" },
-  // { icon: <FiSettings />, label: "Configuración", path: "/configuracion" },
+  { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" }, // 👈 usamos 'action' en lugar de 'path'
 ];
 
 export default function Menu() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <>
-      {/* Hamburger for mobile */}
+      {/* Botón hamburguesa para móviles */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 p-2 rounded bg-white shadow"
         onClick={() => setOpen(!open)}
@@ -52,24 +56,37 @@ export default function Menu() {
       >
         <nav className="flex flex-col gap-1 mt-16 md:mt-8 p-4">
           {menuItems.map((item) => (
-            <NavLink
-              to={item.path}
-              key={item.label}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg transition text-base ${
-                  isActive ? "bg-gray-100 text-black font-semibold" : "text-gray-700 hover:bg-gray-100"
-                }`
-              }
-              onClick={() => setOpen(false)}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span>{item.label}</span>
-            </NavLink>
+            item.action === "logout" ? (
+              <button
+                key={item.label}
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-4 py-2 mt-2 rounded-lg text-red-600 hover:bg-red-100 transition text-base"
+              >
+                <span className="text-xl">{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            ) : (
+              <NavLink
+                to={item.path}
+                key={item.label}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg transition text-base ${
+                    isActive
+                      ? "bg-gray-100 text-black font-semibold"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }
+                onClick={() => setOpen(false)}
+              >
+                <span className="text-xl">{item.icon}</span>
+                <span>{item.label}</span>
+              </NavLink>
+            )
           ))}
         </nav>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Overlay para móviles */}
       {open && (
         <div
           className="fixed inset-0 bg-white/30 backdrop-blur-sm z-30 md:hidden"

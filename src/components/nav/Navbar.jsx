@@ -1,14 +1,10 @@
 import { FaCut, FaSignOutAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+ 
     const nombre = localStorage.getItem("nombreUsuario");
 
 
@@ -28,13 +24,7 @@ const Navbar = () => {
         <span className="text-sm text-black">
           ¡Hola! {nombre}
         </span>
-        <button
-          className="p-2 rounded-md hover:bg-gray-100 transition"
-          onClick={handleLogout}
-          title="Cerrar sesión"
-        >
-          <FaSignOutAlt className="w-4 h-4 text-red-500" />
-        </button>
+      
       </div>
     </nav>
   );
