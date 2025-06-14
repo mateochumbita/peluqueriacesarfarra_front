@@ -15,7 +15,7 @@ import { deleteUsers } from "../../services/users/usersService";
 import { deleteHairdressers } from "../../services/hairdressers/hairdressersService";
 import { normalizeText } from "../../utils/stringUtils";
 export default function Hairdressers() {
-  const { hairdressers, fetchHairdressers } = useAppData();
+  const { hairdressers, fetchHairdressers} = useAppData();
   const loading = hairdressers === null;
   const hairdresserList = hairdressers || [];
 
@@ -38,7 +38,9 @@ export default function Hairdressers() {
     if (!hairdressers) {
       fetchHairdressers();
     }
+    
   }, [hairdressers, fetchHairdressers]);
+
 
   const toggleMenu = (id) =>
     setMenuHairdresserId((prev) => (prev === id ? null : id));

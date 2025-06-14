@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { register } from "../../services/auth/authService";
-import { updateClients} from "../../services/clients/clientService";
+import { updateClients } from "../../services/clients/clientService";
 import { updateUsers, getUsersById } from "../../services/users/usersService";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
@@ -78,7 +78,10 @@ export default function ClientForm({ open, onClose, client }) {
         return;
       }
       if (form.password.length < 6) {
-        setToast({ type: "error", message: "La contraseña debe tener al menos 6 caracteres" });
+        setToast({
+          type: "error",
+          message: "La contraseña debe tener al menos 6 caracteres",
+        });
         return;
       }
     }
@@ -114,7 +117,10 @@ export default function ClientForm({ open, onClose, client }) {
           Habilitado: form.habilitado,
           IdProfile: form.IdProfile,
         });
-        setToast({ type: "success", message: "Cliente actualizado exitosamente" });
+        setToast({
+          type: "success",
+          message: "Cliente actualizado exitosamente",
+        });
       }
       setTimeout(async () => {
         setToast(null);
@@ -134,7 +140,11 @@ export default function ClientForm({ open, onClose, client }) {
         await fetchUsers();
       }, 1000);
     } catch (error) {
-      setToast({ type: "error", message: "Error al guardar el cliente", error });
+      setToast({
+        type: "error",
+        message: "Error al guardar el cliente",
+        error,
+      });
     } finally {
       setLoading(false);
     }
@@ -157,7 +167,7 @@ export default function ClientForm({ open, onClose, client }) {
         </h2>
         {toast && (
           <div
-            className={`mb-2 text-center py-2 rounded ${
+            className={`md:col-span-2 mb-2 py-2 text-center rounded ${
               toast.type === "success"
                 ? "bg-green-100 text-green-700"
                 : "bg-red-100 text-red-700"
@@ -166,7 +176,10 @@ export default function ClientForm({ open, onClose, client }) {
             {toast.message}
           </div>
         )}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          onSubmit={handleSubmit}
+        >
           <div>
             <label className="text-sm font-medium">Usuario</label>
             <input
@@ -179,11 +192,8 @@ export default function ClientForm({ open, onClose, client }) {
               disabled={!!client}
             />
           </div>
-          <div className="relative">
-            <label className="text-sm font-medium">
-              Contraseña
-              {client && <span className="text-xs text-gray-500 ml-2">(No editable en edición)</span>}
-            </label>
+          <div className="relative flex flex-col">
+            <label className="text-sm font-medium">Contraseña</label>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -194,6 +204,11 @@ export default function ClientForm({ open, onClose, client }) {
               required={!client}
               disabled={!!client}
             />
+            {client && (
+              <span className="text-xs text-gray-500 mt-1">
+                No editable en edición
+              </span>
+            )}
             <button
               type="button"
               tabIndex={-1}
@@ -204,11 +219,9 @@ export default function ClientForm({ open, onClose, client }) {
               {showPassword ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
-          <div className="relative">
-            <label className="text-sm font-medium">
-              Confirmar contraseña
-              {client && <span className="text-xs text-gray-500 ml-2">(No editable en edición)</span>}
-            </label>
+
+          <div className="relative flex flex-col">
+            <label className="text-sm font-medium">Confirmar contraseña</label>
             <input
               type={showConfirm ? "text" : "password"}
               name="confirmPassword"
@@ -219,6 +232,11 @@ export default function ClientForm({ open, onClose, client }) {
               required={!client}
               disabled={!!client}
             />
+            {client && (
+              <span className="text-xs text-gray-500 mt-1">
+                No editable en edición
+              </span>
+            )}
             <button
               type="button"
               tabIndex={-1}
@@ -229,6 +247,7 @@ export default function ClientForm({ open, onClose, client }) {
               {showConfirm ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
+
           <div>
             <label className="text-sm font-medium">DNI</label>
             <input
@@ -275,7 +294,7 @@ export default function ClientForm({ open, onClose, client }) {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+            className="md:col-span-2 w-full bg-black text-white py-2 rounded hover:bg-gray-800"
             disabled={loading}
           >
             {loading
