@@ -11,8 +11,8 @@ const Register = () => {
     nombre: "",
     telefono: "",
     email: "",
-    habilitado: true,
-    IdProfile: 2, // Fijo para clientes
+    habilitado: false,
+    IdProfile: 2, // clientes
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

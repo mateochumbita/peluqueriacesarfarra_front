@@ -41,8 +41,7 @@ export default function Dashboard() {
     appointmentsDays,
   ]);
 
-  console.log("appointmentsStats", appointmentsStats);
-  console.log("fetchAppointmentsDays", appointmentsDays);
+
   const nombre = localStorage.getItem("nombreUsuario");
 
   const isLoading = !appointmentsStats || !earningsStats || !clientsStats;
@@ -185,7 +184,7 @@ export default function Dashboard() {
           <div className="w-full lg:w-1/3 bg-white rounded-lg border p-4">
             <h2 className="font-bold text-xl mb-2">Próximos Turnos</h2>
             <p className="text-gray-600 text-sm mb-4">
-              Tienes {appointmentsDays.length} turnos programados para
+              Tienes {appointmentsDays?.length} turnos programados para
               hoy.
             </p>
             <ul className="space-y-3">

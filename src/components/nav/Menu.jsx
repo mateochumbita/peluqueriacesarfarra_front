@@ -9,7 +9,8 @@ import {
   FiBarChart2,
   FiMenu,
   FiX,
-  FiLogOut
+  FiLogOut,
+  FiShield,
 } from "react-icons/fi";
 import { FaUserTie } from "react-icons/fa";
 
@@ -20,6 +21,7 @@ const menuItems = [
   { icon: <FiUsers />, label: "Clientes", path: "/clients" },
   { icon: <FiScissors />, label: "Servicios", path: "/services" },
   { icon: <FaUserTie />, label: "Peluqueros", path: "/hairdressers" },
+  { icon: <FiShield />, label: "Perfiles", path: "/profiles" }, // 👈 Ejemplo
   { icon: <FiBarChart2 />, label: "Estadísticas", path: "/stats" },
   { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" }, // 👈 usamos 'action' en lugar de 'path'
 ];
@@ -55,7 +57,7 @@ export default function Menu() {
         `}
       >
         <nav className="flex flex-col gap-1 mt-16 md:mt-8 p-4">
-          {menuItems.map((item) => (
+          {menuItems.map((item) =>
             item.action === "logout" ? (
               <button
                 key={item.label}
@@ -82,7 +84,7 @@ export default function Menu() {
                 <span>{item.label}</span>
               </NavLink>
             )
-          ))}
+          )}
         </nav>
       </aside>
 
