@@ -20,7 +20,7 @@ const menuItems = [
   { icon: <FiClock />, label: "Turnos", path: "/appointments" },
   { icon: <FiUsers />, label: "Clientes", path: "/clients" },
   { icon: <FiScissors />, label: "Servicios", path: "/services" },
-  { icon: <FaUserTie />, label: "Peluqueros", path: "/hairdressers" },
+  { icon: <FaUserTie />, label: "Adminsitrador", path: "/hairdressers" },
   { icon: <FiShield />, label: "Perfiles", path: "/profiles" }, // 👈 Ejemplo
   { icon: <FiBarChart2 />, label: "Estadísticas", path: "/stats" },
   { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" }, // 👈 usamos 'action' en lugar de 'path'

@@ -13,7 +13,7 @@ import HairdresserForm from "../../components/hairdressers/HairdresserForm";
 import ProfileModal from "../../components/common/ProfileModal";
 import { normalizeText } from "../../utils/stringUtils";
 export default function Hairdressers() {
-  const { hairdressers, fetchHairdressers} = useAppData();
+  const { hairdressers, fetchHairdressers } = useAppData();
   const loading = hairdressers === null;
   const hairdresserList = hairdressers || [];
 
@@ -28,11 +28,8 @@ export default function Hairdressers() {
     if (!hairdressers) {
       fetchHairdressers();
     }
-    
   }, [hairdressers, fetchHairdressers]);
 
-
- 
   // Función para normalizar y eliminar tildes/acentos
 
   const filteredHairdressers = hairdresserList.filter((h) =>
@@ -54,9 +51,9 @@ export default function Hairdressers() {
     setEditingHairdresser(null);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  // const handleSearchChange = (e) => {
+  //   setSearchTerm(e.target.value);
+  // };
 
   const handleViewProfile = (id) => {
     setSelectedProfileId(id);
@@ -79,28 +76,28 @@ export default function Hairdressers() {
         {/* Header */}
         <header className="flex items-center justify-between px-8 py-4 border-b bg-white">
           <div>
-            <h1 className="text-3xl font-bold">Peluqueros</h1>
+            <h1 className="text-3xl font-bold">Perfil del Peluquero</h1>
             <p className="text-gray-600 text-base">
-              Gestiona la información de tus peluqueros.
+              Información del administrador del sistema.
             </p>
           </div>
-          <button
+          {/* <button
             className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:opacity-90 text-sm"
             onClick={handleNewHairdresser}
           >
             <FiUser /> <span className="hidden sm:inline">Nuevo Peluquero</span>
-          </button>
+          </button> */}
         </header>
 
         {/* Filtros y acciones */}
         <div className="flex flex-wrap items-center gap-4 px-8 py-4">
-          <input
+          {/* <input
             type="text"
             placeholder="Buscar peluqueros..."
             className="border rounded px-4 py-2 text-sm w-full sm:w-64"
             value={searchTerm}
             onChange={handleSearchChange}
-          />
+          /> */}
         </div>
 
         {/* Lista de peluqueros */}
@@ -139,7 +136,6 @@ export default function Hairdressers() {
 
                   {/* Acciones */}
                   <div className="flex flex-row flex-wrap items-center gap-2 self-end sm:self-center">
-
                     <button
                       className="border px-3 py-1 rounded hover:bg-gray-100 text-sm flex items-center gap-1 justify-center"
                       onClick={() => handleEditHairdresser(h)}
@@ -152,7 +148,6 @@ export default function Hairdressers() {
                     >
                       Ver Perfil
                     </button>
-                  
                   </div>
                 </div>
               ))
@@ -177,8 +172,6 @@ export default function Hairdressers() {
         onClose={handleCloseProfileModal}
         profileId={selectedProfileId}
       />
-
-     
     </div>
   );
 }
