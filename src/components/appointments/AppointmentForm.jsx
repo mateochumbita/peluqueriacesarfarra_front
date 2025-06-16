@@ -14,7 +14,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     fetchClients,
     fetchHairdressersServices,
     hairdressersServices,
-    fetchAppointmentsStats
+    fetchAppointmentsStats,
   } = useAppData();
   const hairdressersWithServices = hairdressersServices
     ? Array.from(
@@ -62,24 +62,22 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
   console.log("hairdressersServices", hairdressersServices);
 
   const resetForm = () => {
-  setForm({
-    cliente: "",
-    peluquero: "",
-    servicio: "",
-    fecha: "",
-    hora: "",
-  });
-  setToast(null);
-};
-
-const showToast = (toast) => {
-  setToast(toast);
-  setTimeout(() => {
+    setForm({
+      cliente: "",
+      peluquero: "",
+      servicio: "",
+      fecha: "",
+      hora: "",
+    });
     setToast(null);
-  }, 3000);
-};
+  };
 
-
+  const showToast = (toast) => {
+    setToast(toast);
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   useEffect(() => {
     if (editingAppointment) {
@@ -148,9 +146,10 @@ const showToast = (toast) => {
     try {
       if (editingAppointment) {
         await updateAppointments(editingAppointment.Id, appointmentData);
-        showToast({ type: "success", message: "Turno actualizado exitosamente" });
-
-       
+        showToast({
+          type: "success",
+          message: "Turno actualizado exitosamente",
+        });
       } else {
         await createAppointments(appointmentData);
         await fetchAppointmentsStats();
@@ -160,10 +159,18 @@ const showToast = (toast) => {
       fetchAppointments();
       resetForm();
       onClose();
-       if (onSaved) onSaved(); // Notifica a la página que debe recargar
+      if (onSaved) onSaved(); // Notifica a la página que debe recargar
     } catch (error) {
-      setToast({ type: "error", message: "Error al guardar el turno." });
-      console.error(error);
+      let errorMessage = "Error al guardar el turno.";
+
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setToast({ type: "error", message: errorMessage });
+      console.error("Detalle del error:", error);
     } finally {
       setLoading(false);
     }

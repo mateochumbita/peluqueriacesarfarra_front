@@ -14,14 +14,14 @@ import ClientForm from "../../components/clients/ClientForm";
 import ProfileModal from "../../components/common/ProfileModal";
 
 import { useAppData } from "../../context/AppDataContext";
-import { deleteClients } from "../../services/clients/clientService";
-import { deleteUsers } from "../../services/users/usersService";
+
+import { updateUsers } from "../../services/users/usersService";
 import { normalizeText } from "../../utils/stringUtils";
 
 export default function Clients() {
-  const { clients, fetchClients } = useAppData();
+  const { clients, fetchClients, disabledClients, fetchDisabledClients } =
+    useAppData();
   const loading = clients === null;
-  const clientList = clients || [];
 
   /* ==================== estados ==================== */
   const [showModal, setShowModal] = useState(false);
@@ -37,11 +37,17 @@ export default function Clients() {
   const [selectedProfileId, setSelectedProfileId] = useState(null);
 
   const [toast, setToast] = useState(null);
+  const TABS = ["Clientes habilitados", "Clientes deshabilitados"];
+  const [tab, setTab] = useState(TABS[0]);
+
+  const [reenablingId, setReenablingId] = useState(null);
 
   /* ==================== efectos ==================== */
   useEffect(() => {
     if (!clients) fetchClients();
-  }, [clients, fetchClients]);
+    if (!disabledClients) fetchDisabledClients();
+  }, [clients, fetchClients, disabledClients, fetchDisabledClients]);
+  console.log("disabledClients:", disabledClients);
 
   /* ==================== funciones helper ==================== */
   const toggleMenu = (id) =>
@@ -58,19 +64,75 @@ export default function Clients() {
     setShowDeleteModal(false);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleReenableClient = async (client) => {
+    if (!client?.IdUser) {
+      setToast({
+        type: "error",
+        message: "No se puede habilitar: el ID del usuario es indefinido.",
+      });
+      return;
+    }
+
+    setReenablingId(client.Id); // ← Inicia el estado
+
+    try {
+      await updateUsers({ Id: client.IdUser, Habilitado: true });
+      await fetchClients();
+      await fetchDisabledClients();
+      setToast({
+        type: "success",
+        message: "Cliente habilitado exitosamente",
+      });
+    } catch (error) {
+      console.error("Error al habilitar el cliente:", error);
+      setToast({
+        type: "error",
+        message: `Error al habilitar el cliente: ${
+          error.message || "Error desconocido"
+        }`,
+      });
+    } finally {
+      setTimeout(() => setToast(null), 2500);
+      setReenablingId(null); // ← Finaliza el estado
+    }
+  };
+
+  const handleConfirmDisable = async () => {
     if (!deletingClient) return;
+
+    // Validación defensiva
+    if (!deletingClient.IdUser) {
+      setToast({
+        type: "error",
+        message: "No se puede deshabilitar: el ID del usuario es indefinido.",
+      });
+      return;
+    }
+
     setDeleting(true);
     try {
-      await deleteClients(deletingClient.Id);
-      await deleteUsers(deletingClient.IdUser);
-      await fetchClients();
-      setToast({ type: "success", message: "Cliente eliminado exitosamente" });
+      console.log(
+        "Intentando deshabilitar cliente con ID de usuario:",
+        deletingClient.IdUser
+      );
+      await updateUsers({ Id: deletingClient.IdUser, Habilitado: false });
+
+      await fetchClients(); // recarga lista
+      await fetchDisabledClients();
+      setToast({
+        type: "success",
+        message: "Cliente deshabilitado exitosamente",
+      });
     } catch (error) {
-      setToast({ type: "error", message: "Error al eliminar el cliente" });
-      console.error(error);
+      console.error("Error al actualizar el usuario:", error);
+      setToast({
+        type: "error",
+        message: `Error al deshabilitar el cliente: ${
+          error.message || "Error desconocido"
+        }`,
+      });
     } finally {
-      setTimeout(() => setToast(null), 2000);
+      setTimeout(() => setToast(null), 2500);
       setDeleting(false);
       handleCloseDeleteModal();
     }
@@ -78,7 +140,9 @@ export default function Clients() {
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  const filteredClients = clientList.filter((c) =>
+  const filteredClients = (
+    (tab === TABS[0] ? clients : disabledClients) || []
+  ).filter((c) =>
     normalizeText(`${c.Nombre} ${c.Dni}`).includes(normalizeText(searchTerm))
   );
 
@@ -131,6 +195,23 @@ export default function Clients() {
             value={searchTerm}
             onChange={handleSearchChange}
           />
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-4 px-8 py-2 bg-white">
+          {TABS.map((t) => (
+            <button
+              key={t}
+              className={`px-4 py-2 rounded text-sm ${
+                tab === t
+                  ? "bg-gray-100 text-black font-semibold"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+              }`}
+              onClick={() => setTab(t)}
+            >
+              {t}
+            </button>
+          ))}
         </div>
 
         {/* Lista */}
@@ -201,12 +282,24 @@ export default function Clients() {
 
                       {menuClientId === c.Id && (
                         <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
-                          <button
-                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
-                            onClick={() => handleOpenDeleteModal(c)}
-                          >
-                            Eliminar
-                          </button>
+                          {tab === TABS[0] ? (
+                            <button
+                              className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
+                              onClick={() => handleOpenDeleteModal(c)}
+                            >
+                              Deshabilitar
+                            </button>
+                          ) : (
+                            <button
+                              className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-green-600 disabled:opacity-50"
+                              onClick={() => handleReenableClient(c)}
+                              disabled={reenablingId === c.Id}
+                            >
+                              {reenablingId === c.Id
+                                ? "Habilitando..."
+                                : "Habilitar"}
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -243,10 +336,11 @@ export default function Clients() {
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
           <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-sm text-center animate-[modalIn_0.2s_ease]">
-            <h3 className="text-lg font-bold mb-2">¿Eliminar cliente?</h3>
+            <h3 className="text-lg font-bold mb-2">¿Deshabilitar cliente?</h3>
             <p className="mb-6 text-gray-600">
-              ¿Estás seguro que deseas eliminar <b>{deletingClient?.Nombre}</b>?
-              Esta acción no se puede deshacer.
+              ¿Estás seguro que deseas deshabilitar a{" "}
+              <b>{deletingClient?.Nombre}</b>? Podrás volver a habilitarlo más
+              tarde si lo deseas.
             </p>
             <div className="flex justify-center gap-4">
               <button
@@ -258,20 +352,20 @@ export default function Clients() {
               </button>
               <button
                 className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
-                onClick={handleConfirmDelete}
+                onClick={handleConfirmDisable}
                 disabled={deleting}
               >
-                {deleting ? "Eliminando..." : "Eliminar"}
+                {deleting ? "Deshabilitando..." : "Deshabilitar"}
               </button>
             </div>
           </div>
           <style>
             {`
-              @keyframes modalIn {
-                0% { opacity: 0; transform: scale(0.95); }
-                100% { opacity: 1; transform: scale(1); }
-              }
-            `}
+        @keyframes modalIn {
+          0% { opacity: 0; transform: scale(0.95); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}
           </style>
         </div>
       )}

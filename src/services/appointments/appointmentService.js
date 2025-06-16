@@ -20,14 +20,12 @@ export const getAppointmentsById = async (id) => {
 
 export const getAllAppointmentsDays = async () => {
   try {
-    const response = await axiosInstance.get(
-      `/api/v1/appointments/day/`
-    );
+    const response = await axiosInstance.get(`/api/v1/appointments/day/`);
     return response.data;
   } catch (error) {
     console.error("Error al obtener las citas del día:", error);
   }
-}
+};
 
 export const createAppointments = async (data) => {
   try {
@@ -35,6 +33,7 @@ export const createAppointments = async (data) => {
     return response.data;
   } catch (error) {
     console.error("Error al obtener el cliente", error);
+    throw error;
   }
 };
 // appointmentService.js
@@ -49,7 +48,10 @@ export const updateAppointments = async (id, data) => {
     console.log("Respuesta del servidor:", response);
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar el turno:", error.response?.data || error.message);
+    console.error(
+      "Error al actualizar el turno:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

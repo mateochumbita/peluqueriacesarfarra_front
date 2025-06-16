@@ -9,6 +9,16 @@ export const getAllClientes = async () => {
   }
 };
 
+
+export const getAllDisabledClientes = async () => {
+  try {
+    const response = await axiosInstance.get("/api/v1/clients/disabled");
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener el cliente:", error);
+  }
+};
+
 export const getClientesById = async (id) => {
   try {
     const response = await axiosInstance.get(`/api/v1/clients/${id}`);

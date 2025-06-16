@@ -11,8 +11,6 @@ import { useAppData } from "../../context/AppDataContext";
 import { useEffect, useState } from "react";
 import HairdresserForm from "../../components/hairdressers/HairdresserForm";
 import ProfileModal from "../../components/common/ProfileModal";
-import { deleteUsers } from "../../services/users/usersService";
-import { deleteHairdressers } from "../../services/hairdressers/hairdressersService";
 import { normalizeText } from "../../utils/stringUtils";
 export default function Hairdressers() {
   const { hairdressers, fetchHairdressers} = useAppData();
@@ -26,14 +24,6 @@ export default function Hairdressers() {
   const [selectedProfileId, setSelectedProfileId] = useState(null);
   //delete modal
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deletingClient, setDeletingClient] = useState(null);
-  const [deleting, setDeleting] = useState(false);
-
-  const [menuHairdresserId, setMenuHairdresserId] = useState(null); // menú de los 3 puntos
-
-  const [setToast] = useState(null);
-
   useEffect(() => {
     if (!hairdressers) {
       fetchHairdressers();
@@ -42,38 +32,7 @@ export default function Hairdressers() {
   }, [hairdressers, fetchHairdressers]);
 
 
-  const toggleMenu = (id) =>
-    setMenuHairdresserId((prev) => (prev === id ? null : id));
-
-  const handleOpenDeleteModal = (client) => {
-    setDeletingClient(client);
-    setShowDeleteModal(true);
-    setMenuHairdresserId(null); // cerrar menú
-  };
-
-  const handleCloseDeleteModal = () => {
-    setDeletingClient(null);
-    setShowDeleteModal(false);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (!deletingClient) return;
-    setDeleting(true);
-    try {
-      await deleteHairdressers(deletingClient.Id);
-      await deleteUsers(deletingClient.IdUser);
-      await fetchHairdressers();
-      setToast({ type: "success", message: "Cliente eliminado exitosamente" });
-    } catch (error) {
-      setToast({ type: "error", message: "Error al eliminar el cliente" });
-      console.error(error);
-    } finally {
-      setTimeout(() => setToast(null), 2000);
-      setDeleting(false);
-      handleCloseDeleteModal();
-    }
-  };
-
+ 
   // Función para normalizar y eliminar tildes/acentos
 
   const filteredHairdressers = hairdresserList.filter((h) =>
@@ -193,23 +152,7 @@ export default function Hairdressers() {
                     >
                       Ver Perfil
                     </button>
-                    <button
-                      className="p-2 hover:bg-gray-100 rounded self-center"
-                      onClick={() => toggleMenu(h.Id)}
-                    >
-                      <FiMoreHorizontal />
-                    </button>
-
-                    {menuHairdresserId === h.Id && (
-                      <div className="absolute right-0 top-full mt-2 w-32 bg-white border rounded shadow-lg z-10">
-                        <button
-                          className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
-                          onClick={() => handleOpenDeleteModal(h)}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    )}
+                  
                   </div>
                 </div>
               ))
@@ -235,42 +178,7 @@ export default function Hairdressers() {
         profileId={selectedProfileId}
       />
 
-      {/* Modal de confirmación de eliminación */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
-          <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-sm text-center animate-[modalIn_0.2s_ease]">
-            <h3 className="text-lg font-bold mb-2">¿Eliminar cliente?</h3>
-            <p className="mb-6 text-gray-600">
-              ¿Estás seguro que deseas eliminar <b>{deletingClient?.Nombre}</b>?
-              Esta acción no se puede deshacer.
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                className="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
-                onClick={handleCloseDeleteModal}
-                disabled={deleting}
-              >
-                Cancelar
-              </button>
-              <button
-                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
-                onClick={handleConfirmDelete}
-                disabled={deleting}
-              >
-                {deleting ? "Eliminando..." : "Eliminar"}
-              </button>
-            </div>
-          </div>
-          <style>
-            {`
-              @keyframes modalIn {
-                0% { opacity: 0; transform: scale(0.95); }
-                100% { opacity: 1; transform: scale(1); }
-              }
-            `}
-          </style>
-        </div>
-      )}
+     
     </div>
   );
 }

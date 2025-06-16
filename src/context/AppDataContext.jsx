@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { getAllAppointments, getAllAppointmentsDays } from "../services/appointments/appointmentService";
 
-import { getAllClientes } from "../services/clients/clientService";
+import { getAllClientes, getAllDisabledClientes } from "../services/clients/clientService";
 import { getAllEarnings } from "../services/earnings/earningService";
 import { getAllHairdressers } from "../services/hairdressers/hairdressersService";
 import { getAllHairdressersServices } from "../services/hairdressers_services/hairdressers_servicesService";
@@ -18,6 +18,8 @@ export function AppDataProvider({ children }) {
   const [appointments, setAppointments] = useState(null);
   const [appointmentsDays, setAppointmentsDays] = useState(null);
   const [clients, setClients] = useState(null);
+  const [disabledClients, setDisabledClients] = useState(null);
+
   const [earnings, setEarnings] = useState(null);
   const [hairdressers, setHairdressers] = useState(null);
   const [hairdressersServices, setHairdressersServices] = useState(null);
@@ -55,6 +57,12 @@ export function AppDataProvider({ children }) {
     const res = await getAllClientes();
     const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
     setClients(sorted);
+  };
+
+  const fetchDisabledClients = async () => {
+    const res = await getAllDisabledClientes();
+    const sorted = (res?.supabaseResults || []).sort((a, b) => a.Id - b.Id);
+    setDisabledClients(sorted);
   };
 
   const fetchEarnings = async () => {
@@ -97,6 +105,7 @@ export function AppDataProvider({ children }) {
         fetchAppointmentsDays,        
         appointmentsDays,setAppointmentsDays,
         clients, setClients, fetchClients,
+        disabledClients, setDisabledClients, fetchDisabledClients,
         earnings, setEarnings, fetchEarnings,
         hairdressers, setHairdressers, fetchHairdressers,
         hairdressersServices, setHairdressersServices, fetchHairdressersServices,
