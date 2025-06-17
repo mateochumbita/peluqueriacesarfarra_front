@@ -107,8 +107,6 @@ export default function Profiles() {
           )}
         </main>
 
-     
-
         <ProfileForm
           open={showModal}
           onClose={handleCloseModal}

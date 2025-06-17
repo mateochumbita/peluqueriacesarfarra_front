@@ -46,19 +46,7 @@ export default function Profile() {
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>Cargando perfil...</p>;
 
-  // if (!user || !profile) {
-  //   return (
-  //     <div className="flex min-h-screen bg-gray-50">
-  //       <Menu />
-  //       <div className="flex-1 flex flex-col">
-  //         <Navbar />
-  //         <div className="p-8">
-  //           <p className="text-gray-500">Perfil no encontrado.</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+
 
   return (
     <div className="flex min-h-screen bg-gray-50">

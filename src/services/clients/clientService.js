@@ -9,7 +9,6 @@ export const getAllClientes = async () => {
   }
 };
 
-
 export const getAllDisabledClientes = async () => {
   try {
     const response = await axiosInstance.get("/api/v1/clients/disabled");
@@ -39,15 +38,17 @@ export const createClients = async (data) => {
 
 export const updateClients = async (data) => {
   try {
-    console.log("Datos enviados al servidor:", data); // Verifica los datos enviados
     const response = await axiosInstance.put(
       `/api/v1/clients/${data.Id}`,
       data
     );
-    console.log("Respuesta del servidor:", response); // Inspecciona la respuesta
+
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar el cliente:", error.response?.data || error.message);
+    console.error(
+      "Error al actualizar el cliente:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -61,14 +62,11 @@ export const deleteClients = async (id) => {
   }
 };
 
-
-
 export const getClientByUserId = async (userId) => {
-try {
-  const response = await axiosInstance.get(`/api/v1/clients/user/${userId}`);
-  return response.data;
-} catch (error) {
-  console.error("Error al obtener el cliente:", error);
-}
-
-}
+  try {
+    const response = await axiosInstance.get(`/api/v1/clients/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener el cliente:", error);
+  }
+};

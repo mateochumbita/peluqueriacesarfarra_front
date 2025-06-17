@@ -71,7 +71,7 @@ export default function Stats() {
           ))}
         </div>
 
-        {/* Contenido */}
+        
         <main className="flex-1 px-8 pb-8">
           {loading ? (
             <div className="flex justify-center items-center h-64 text-gray-500 text-lg">

@@ -240,7 +240,7 @@ export default function Services() {
             </style>
           </div>
         )}
-        {/* ...ServiceForm modal... */}
+        {/* ServiceForm modal */}
         <ServiceForm
           open={showModal}
           onClose={handleCloseModal}

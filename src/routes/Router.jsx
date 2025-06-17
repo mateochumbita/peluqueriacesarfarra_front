@@ -1,23 +1,23 @@
 // src/routes/Router.jsx
-import { Routes, Route } from 'react-router-dom'
-import HomePage from '../pages/home/HomePage'
-import Register from '../pages/auth/Register'
-import Login from '../pages/auth/Login'
-import { lazy, Suspense } from 'react'
-import Calendar from '../pages/calendar/Calendar'
-import Appointments from '../pages/appointments/Appointments'
-import Clients from '../pages/clients/Clients'
-import Services from '../pages/services/Services'
-import Stats from '../pages/stats/Stats'
-import Hairdressers from '../pages/hairdressers/Hairdressers'
-import ProtectedRoutes from '../components/auth/ProtectedRoutes'
-import Profile from '../pages/profile/Profile'
-import AdminRoute from '../components/auth/AdminRoute'
-import DayDetail from '../pages/calendar/DayDetail'
-import About from '../pages/about/About'
-import Profiles from '../pages/profiles/Profiles'
+import { Routes, Route } from "react-router-dom";
+import HomePage from "../pages/home/HomePage";
+import Register from "../pages/auth/Register";
+import Login from "../pages/auth/Login";
+import { lazy, Suspense } from "react";
+import Calendar from "../pages/calendar/Calendar";
+import Appointments from "../pages/appointments/Appointments";
+import Clients from "../pages/clients/Clients";
+import Services from "../pages/services/Services";
+import Stats from "../pages/stats/Stats";
+import Hairdressers from "../pages/hairdressers/Hairdressers";
+import ProtectedRoutes from "../components/auth/ProtectedRoutes";
+import Profile from "../pages/profile/Profile";
+import AdminRoute from "../components/auth/AdminRoute";
+import DayDetail from "../pages/calendar/DayDetail";
+import About from "../pages/about/About";
+import Profiles from "../pages/profiles/Profiles";
 
-const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
+const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
 export default function AppRouter() {
   return (
@@ -36,13 +36,7 @@ export default function AppRouter() {
           </AdminRoute>
         }
       />
-       <Route
-        path="/about"
-        element={
-         
-           <About />
-        }
-      />
+      <Route path="/about" element={<About />} />
       <Route
         path="/calendar"
         element={
@@ -52,15 +46,6 @@ export default function AppRouter() {
         }
       />
 
-
-        {/* <Route
-        path="/dia/:fecha"
-        element={
-          <AdminRoute>
-            <DayDetail />
-          </AdminRoute>
-        }
-      /> */}
       <Route
         path="/appointments"
         element={
@@ -78,7 +63,7 @@ export default function AppRouter() {
         }
       />
 
-          <Route
+      <Route
         path="/profile/:id"
         element={
           <ProtectedRoutes>
@@ -87,9 +72,6 @@ export default function AppRouter() {
         }
       />
 
-      
-       
-      
       <Route
         path="/services"
         element={
@@ -99,8 +81,7 @@ export default function AppRouter() {
         }
       />
 
-
-          <Route
+      <Route
         path="/profiles"
         element={
           <AdminRoute>
@@ -127,5 +108,5 @@ export default function AppRouter() {
       />
       {/* Add more routes as needed */}
     </Routes>
-  )
+  );
 }

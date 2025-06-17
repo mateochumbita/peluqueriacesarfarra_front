@@ -25,9 +25,9 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Main */}
+      
       <main className="flex flex-col lg:flex-row flex-1 p-4 sm:p-8 lg:p-16 bg-gradient-to-br from-white to-gray-100 gap-8">
-        {/* Left */}
+     
         <div className="flex-1 space-y-6">
           <h2 className="text-4xl sm:text-5xl font-bold leading-tight text-gray-900 text-center lg:text-left">
             Reserva tu Próximo corte con facilidad
