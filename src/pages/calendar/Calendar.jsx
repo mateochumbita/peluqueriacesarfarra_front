@@ -153,9 +153,9 @@ const generateTimeSlots = (date) => {
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
-            // setEditingAppointment(null); // limpiar al cerrar
+            
           }}
-          // editingAppointment={editingAppointment}
+       
         />
 
         <main className="flex-1 p-4 sm:p-8 overflow-auto">

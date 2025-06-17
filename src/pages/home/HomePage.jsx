@@ -33,8 +33,8 @@ export default function HomePage() {
             Reserva tu Próximo corte con facilidad
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
-            Agenda tus turnos fácilmente por WhatsApp y recibí recordatorios
-            automáticos. Así evitás olvidos, reducís cancelaciones y mejorás tu
+            Agenda tus turnos fácilmente por WhatsApp y recibí confirmaciones
+            automáticas. Así evitás olvidos, reducís cancelaciones y mejorás tu
             experiencia con cada visita.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -61,17 +61,17 @@ export default function HomePage() {
           <Feature
             icon={<FiCalendar size={28} />}
             title="Reserva Fácil"
-            desc="Reserva Turnos en cualquier momento según disponibilidad en tiempo real"
+            desc="Reserva Turnos en cualquier momento"
           />
           <Feature
             icon={<FiClock size={28} />}
             title="Recordatorios"
-            desc="Recibe recordatorios automáticos por WhatsApp o SMS"
+            desc="Recibe confirmaciones automáticas por Correo electrónico"
           />
           <Feature
             icon={<FiUser size={28} />}
             title="Perfil Personal"
-            desc="Gestiona tus Turnos y visualiza tu historial"
+            desc="Gestiona tus Turnos e información personal"
           />
           <Feature
             icon={<FiScissors size={28} />}

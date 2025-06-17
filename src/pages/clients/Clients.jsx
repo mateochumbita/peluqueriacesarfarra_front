@@ -42,14 +42,14 @@ export default function Clients() {
 
   const [reenablingId, setReenablingId] = useState(null);
 
-  /* ==================== efectos ==================== */
+//clients and disabledClients
   useEffect(() => {
     if (!clients) fetchClients();
     if (!disabledClients) fetchDisabledClients();
   }, [clients, fetchClients, disabledClients, fetchDisabledClients]);
   console.log("disabledClients:", disabledClients);
 
-  /* ==================== funciones helper ==================== */
+ //helpers
   const toggleMenu = (id) =>
     setMenuClientId((prev) => (prev === id ? null : id));
 
@@ -64,6 +64,8 @@ export default function Clients() {
     setShowDeleteModal(false);
   };
 
+
+  //habilitar cliente
   const handleReenableClient = async (client) => {
     if (!client?.IdUser) {
       setToast({
@@ -96,7 +98,7 @@ export default function Clients() {
       setReenablingId(null); // ← Finaliza el estado
     }
   };
-
+//deshabilitar cliente
   const handleConfirmDisable = async () => {
     if (!deletingClient) return;
 
@@ -146,7 +148,6 @@ export default function Clients() {
     normalizeText(`${c.Nombre} ${c.Dni}`).includes(normalizeText(searchTerm))
   );
 
-  /* ==================== render ==================== */
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Menu />
@@ -271,7 +272,7 @@ export default function Clients() {
                       Ver Perfil
                     </button>
 
-                    {/* dropdown de los 3 puntos */}
+                    {/* dropdown */}
                     <div className="relative">
                       <button
                         className="p-2 hover:bg-gray-100 rounded"

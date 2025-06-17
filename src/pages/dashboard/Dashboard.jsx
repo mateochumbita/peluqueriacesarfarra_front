@@ -17,6 +17,8 @@ export default function Dashboard() {
     appointmentsDays,
   } = useAppData();
 
+
+  // traer appointmentStats y earningsStats
   useEffect(() => {
     if (!appointmentsStats) {
       fetchAppointmentsStats();
@@ -41,7 +43,7 @@ export default function Dashboard() {
     appointmentsDays,
   ]);
 
-
+//obtener nombre del usuario del localstorage
   const nombre = localStorage.getItem("nombreUsuario");
 
   const isLoading = !appointmentsStats || !earningsStats || !clientsStats;
