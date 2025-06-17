@@ -120,7 +120,7 @@ export default function Appointments() {
     );
 
   const handleSaved = async () => {
-    await fetchAppointments(); // o el método que uses
+    await fetchAppointments(); 
     setToast({
       type: "success",
       message: editingAppointment
@@ -128,7 +128,7 @@ export default function Appointments() {
         : "Turno creado exitosamente",
     });
     setTimeout(() => setToast(null), 2000);
-    setEditingAppointment(null); // si aplicable
+    setEditingAppointment(null); 
   };
 
   return (

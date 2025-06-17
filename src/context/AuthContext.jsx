@@ -52,7 +52,6 @@ const login = async (data) => {
         localStorage.setItem("rol", "desconocido");
       }
     } catch (e) {
-      // Manejo de errores opcional si querés mostrar algo
       console.error("Error al obtener el nombre:", e);
     }
 
