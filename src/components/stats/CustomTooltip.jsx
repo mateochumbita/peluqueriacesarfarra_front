@@ -1,3 +1,4 @@
+//texto alternativo para la Linechart
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (

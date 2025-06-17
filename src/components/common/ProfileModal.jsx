@@ -27,9 +27,6 @@ export default function ProfileModal({ open, onClose, profileId }) {
   const type = client ? "Cliente" : hairdresser ? "Peluquero" : null;
   const user = users?.find((u) => String(u.Id) === String(profile?.IdUser));
 
-  console.log("Profile:", profile);
-  console.log("Profile.IdUser:", profile?.IdUser);
-  console.log("Users:", users);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-[2px] transition-all">

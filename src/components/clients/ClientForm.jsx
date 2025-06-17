@@ -61,7 +61,7 @@ export default function ClientForm({ open, onClose, client }) {
       setToast(null);
     };
     if (open) fetchData();
-    // eslint-disable-next-line
+    
   }, [client, open]);
 
   const handleChange = (e) => {

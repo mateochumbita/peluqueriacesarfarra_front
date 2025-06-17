@@ -45,8 +45,7 @@ export default function ClientProfileModal({
       setUserId(id);
       console.log("id del usuario: ", userId);
 
-      // const client = await getClientByUserId(id);
-      // console.log("Cliente obtenido:", client);
+     
 
       try {
         const [user, clientData] = await Promise.all([
@@ -126,7 +125,7 @@ export default function ClientProfileModal({
       setTimeout(() => {
         if (onProfileUpdate) onProfileUpdate();
         handleClose(); // limpiar y cerrar
-        onClose(); // Cierra modal tras breve delay
+        onClose(); // Cierra modal
       }, 1200);
     } catch (error) {
       console.error("Error al actualizar perfil:", error);

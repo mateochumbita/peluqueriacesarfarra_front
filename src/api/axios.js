@@ -10,7 +10,7 @@ const axiosConfig = {
 
 const axiosInstance = axios.create(axiosConfig);
 
-// Interceptor para agregar token en cada request
+// agregar token en cada request
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor para manejar errores de autenticación
+//  manejar errores de autenticación
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -57,10 +57,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     hairdressersServices,
   ]);
 
-  console.log("appointments", appointments);
-  console.log("clients", clients);
-  console.log("hairdressersServices", hairdressersServices);
-
+ 
   const resetForm = () => {
     setForm({
       cliente: "",
@@ -222,7 +219,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
             </select>
           </div>
 
-          {/* Peluquero */}
+    
           {/* Peluquero */}
           <div>
             <label className="text-sm font-medium">Peluquero</label>

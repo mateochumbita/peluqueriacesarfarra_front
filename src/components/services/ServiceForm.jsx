@@ -13,7 +13,7 @@ export default function ServiceForm({ open, onClose, service, onSaved }) {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
-  // Si se pasa un servicio para editar, inicializa el formulario
+  //  servicio para editar, inicializa el formulario
   useEffect(() => {
     if (service) {
       setForm({
@@ -49,7 +49,7 @@ export default function ServiceForm({ open, onClose, service, onSaved }) {
           Precio: parseFloat(form.Precio).toFixed(2),
           Duracion: parseInt(form.Duracion, 10),
         });
-        // setToast({ type: "success", message: "Servicio actualizado exitosamente" });
+      
       } else {
         // Crear nuevo servicio
         await createServices({

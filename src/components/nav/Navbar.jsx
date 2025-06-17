@@ -1,16 +1,11 @@
 import { FaCut, FaSignOutAlt } from "react-icons/fa";
 
-
 const Navbar = () => {
-  
-
- 
-    const nombre = localStorage.getItem("nombreUsuario");
-
+  const nombre = localStorage.getItem("nombreUsuario");
 
   return (
     <nav className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white shadow-sm">
-      {/* Izquierda: Icono y texto */}
+      {/*Icono y texto */}
       <div className="flex items-center space-x-3">
         <FaCut className="text-black w-4 h-4" />
         <div className="leading-tight">
@@ -19,12 +14,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Derecha: Saludo e icono de logout */}
+      {/* Saludo e icono de logout */}
       <div className="flex items-center space-x-4">
-        <span className="text-sm text-black">
-          ¡Hola! {nombre}
-        </span>
-      
+        <span className="text-sm text-black">¡Hola! {nombre}</span>
       </div>
     </nav>
   );

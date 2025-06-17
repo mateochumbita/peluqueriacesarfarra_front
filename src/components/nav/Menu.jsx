@@ -21,9 +21,9 @@ const menuItems = [
   { icon: <FiUsers />, label: "Clientes", path: "/clients" },
   { icon: <FiScissors />, label: "Servicios", path: "/services" },
   { icon: <FaUserTie />, label: "Adminsitrador", path: "/hairdressers" },
-  { icon: <FiShield />, label: "Perfiles", path: "/profiles" }, // 👈 Ejemplo
+  { icon: <FiShield />, label: "Perfiles", path: "/profiles" }, 
   { icon: <FiBarChart2 />, label: "Estadísticas", path: "/stats" },
-  { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" }, // 👈 usamos 'action' en lugar de 'path'
+  { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" }, 
 ];
 
 export default function Menu() {

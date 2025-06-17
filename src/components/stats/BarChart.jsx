@@ -26,8 +26,8 @@ const BarChart = ({ data, title, label, formatAsCurrency = false }) => {
       {
         label: label,
         data: values,
-        backgroundColor: "rgba(59, 130, 246, 0.5)", // Azul con opacidad
-        borderColor: "rgba(59, 130, 246, 1)", // Azul sólido
+        backgroundColor: "rgba(59, 130, 246, 0.5)", 
+        borderColor: "rgba(59, 130, 246, 1)", 
         borderWidth: 1,
       },
     ],

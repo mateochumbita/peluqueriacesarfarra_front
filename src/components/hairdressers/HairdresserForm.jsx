@@ -164,8 +164,8 @@ export default function HairdresserForm({ open, onClose, hairdresser }) {
           email: form.email,
         });
 
-        // Obtené el ID del nuevo peluquero creado
-        newHairdresserId = created?.Id; // ajustá según lo que devuelva tu backend
+        // obtener id del nuevo peluquero creado
+        newHairdresserId = created?.Id; 
 
         // Asociar servicios seleccionados
         for (const serviceId of selectedServices) {
@@ -210,7 +210,7 @@ export default function HairdresserForm({ open, onClose, hairdresser }) {
           });
         }
 
-        // (Opcional) Eliminar servicios que fueron deseleccionados
+        // Eliminar servicios que fueron deseleccionados
         const servicesToRemove = currentRelations.filter(
           (rel) => !selectedServices.includes(rel.IdService)
         );
