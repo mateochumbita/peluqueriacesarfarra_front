@@ -37,7 +37,7 @@ export default function About() {
             Lo que empezó como un pequeño emprendimiento, con el boca en boca como única promoción, fue creciendo gracias a la confianza de sus clientes y la calidad en cada corte. Hoy, sigue atendiendo con la misma calidez de siempre, pero con nuevas herramientas para hacer más simple la experiencia de cada visita.
           </p>
           <p className="text-lg text-gray-700">
-            Actualmente, los turnos se reservan fácilmente por <span className="font-semibold">WhatsApp</span>, lo que permite una comunicación directa, rápida y personalizada. Además, se envían recordatorios automáticos para que no te pierdas tu cita.
+            Actualmente, los turnos se reservan fácilmente por <span className="font-semibold">WhatsApp</span>, lo que permite una comunicación directa, rápida y personalizada. Además, se envían recordatorios automáticos para que no te pierdas tu turno.
           </p>
           <p className="text-lg text-gray-700">
             En Peluquería César Farra, cada corte es una oportunidad para conectar, renovar y disfrutar de un momento para vos.

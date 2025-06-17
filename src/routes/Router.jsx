@@ -13,7 +13,7 @@ import Hairdressers from "../pages/hairdressers/Hairdressers";
 import ProtectedRoutes from "../components/auth/ProtectedRoutes";
 import Profile from "../pages/profile/Profile";
 import AdminRoute from "../components/auth/AdminRoute";
-import DayDetail from "../pages/calendar/DayDetail";
+
 import About from "../pages/about/About";
 import Profiles from "../pages/profiles/Profiles";
 
@@ -106,7 +106,7 @@ export default function AppRouter() {
           </AdminRoute>
         }
       />
-      {/* Add more routes as needed */}
+      
     </Routes>
   );
 }

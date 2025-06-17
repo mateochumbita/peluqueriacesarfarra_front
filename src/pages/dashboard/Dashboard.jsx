@@ -74,7 +74,7 @@ export default function Dashboard() {
           <div>
             <h1 className="text-2xl font-bold">Panel Principal</h1>
             <p className="text-gray-600 text-sm">
-              Bienvenido de nuevo, {nombre}. Aquí está el resumen de tu negocio.
+              Bienvenido de vo, {nombre}. Aquí está el resumen de tu negocio.
             </p>
           </div>
          <button
@@ -82,7 +82,7 @@ export default function Dashboard() {
             className="flex items-center gap-2 bg-black text-white px-3 py-2 rounded hover:opacity-90 text-sm whitespace-nowrap"
           >
             <span className="sm:hidden text-lg">＋</span>
-            <span className="hidden sm:inline">+ Nueva Cita</span>
+            <span className="hidden sm:inline">+Nuevo Turno</span>
           </button>
         </header>
 
