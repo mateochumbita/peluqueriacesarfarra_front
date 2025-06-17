@@ -148,7 +148,7 @@ export default function Appointments() {
             className="flex items-center gap-2 bg-black text-white px-3 py-2 rounded hover:opacity-90 text-sm whitespace-nowrap"
           >
             <span className="sm:hidden text-lg">＋</span>
-            <span className="hidden sm:inline">+ Nueva Turno</span>
+            <span className="hidden sm:inline">+ Nuevo Turno</span>
           </button>
         </header>
 
