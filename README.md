@@ -46,6 +46,19 @@ npm run dev
 ```
 Esto levantará el servidor de desarrollo en http://localhost:5173
 
-### 5. Credenciales del Administrador
+###🔐 5. Credenciales del Administrador
 Las mismas están disponibles en la entrega de la Actividad Obligatoria nro. 2
+
+
+## 🧪 Ejecutar pruebas
+Si lo desea, puede ejecutar las pruebas unitarias que están orientadas a probar el correcto funcionamiento de los siguientes componentes 
+- dateRangerFilter.js
+- FormateDate.js
+- ParseFechaLocal.js
+- stringUtils.js
+
+```bash
+npm test
+
+```
 
