@@ -7,7 +7,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="flex justify-between items-center px-4 py-4 border-b text-sm">
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <span className="text-2xl">✂️</span> Peluquería César Farra
+          <span className="text-2xl"><FiScissors></FiScissors></span> Peluquería César Farra
         </h1>
         <div className="flex flex-wrap gap-2 justify-end items-center">
           <Link
