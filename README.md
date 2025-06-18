@@ -9,6 +9,10 @@ Este proyecto es el frontend del sistema de gestión de la Peluquería César Fa
 - 🎨 **Tailwind CSS** – Framework de estilos utilitario para construir diseños modernos.
 - 🧪 **Vitest** – Framework de pruebas para componentes y lógica del frontend.
 
+## Link del despliegue 
+En el siguiente link se encuentra la aplicación operativa desplegada en un servidor de Vercel, si desea hacer una prueba rápida se recomienda ingresar a este link, de lo contrario puede seguir con loas pasos de Instalación y ejecución del proyecto:
+<https://peluqueriacesarfarra-front.vercel.app/>
+
 ## 📦 Instalación y ejecución del proyecto
 
 ### 1. Clonar el repositorio
