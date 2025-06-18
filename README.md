@@ -1,12 +1,75 @@
-# React + Vite
+# 💇‍♂️ Frontend Peluquería César Farra
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es el frontend del sistema de gestión de la Peluquería César Farra. Está diseñado para administrar de manera eficiente clientes, turnos, servicios, y visualizar estadísticas y métricas del negocio. Su objetivo es facilitar la operatividad diaria de la peluquería mediante una interfaz clara, rápida y adaptable.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚛️ **React** – Biblioteca para construir interfaces de usuario.
+- ⚡ **Vite** – Herramienta de desarrollo rápido para aplicaciones React.
+- 🎨 **Tailwind CSS** – Framework de estilos utilitario para construir diseños modernos.
+- 🧪 **Vitest** – Framework de pruebas para componentes y lógica del frontend.
 
-## Expanding the ESLint configuration
+## Diagrama de Arquitectura de la Aplicación
+![hairsalon_architecture_diagram](https://github.com/user-attachments/assets/1a15f9b4-3e43-468a-a32a-2595b8a2d040)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## 🌐Link del despliegue 
+En el siguiente link se encuentra la aplicación operativa desplegada en un servidor de Vercel, si desea hacer una prueba rápida se recomienda ingresar a este link, de lo contrario puede seguir con loas pasos de Instalación y ejecución del proyecto:
+
+### Sistema de gestión de turnos operativo:
+<https://peluqueriacesarfarra-front.vercel.app/>
+
+## 📦 Instalación y ejecución del proyecto
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/mateochumbita/peluqueriacesarfarra_front.git
+cd frontend-peluqueria-farra
+```
+### 2. Instalar dependencias
+```bash
+npm install
+
+```
+### 3. Inicializar variables de entorno
+⚠️ Este proyecto depende de un backend para funcionar correctamente.
+Asegurate de tener el link del deploy del backend dentro de tus variables de entorno, **de lo contrario la aplicación no funcionará**
+1. Crear un archivo .env en la raiz de nuestro proyecto
+2. Copiar y pegar la siguiente variable de entorno
+   
+```env
+VITE_API_URL = https://cesarfarra-api.vercel.app/
+```
+
+
+### 4. Ejecutar el proyecto
+```bash
+npm run dev
+
+```
+Esto levantará el servidor de desarrollo en http://localhost:5173
+
+### 🔐 5. Credenciales del Administrador
+Las mismas están disponibles en la entrega de la Actividad Obligatoria nro. 2
+
+
+## 🧪 Ejecutar pruebas
+Si lo desea, puede ejecutar las pruebas unitarias que están orientadas a probar el correcto funcionamiento de los siguientes componentes 
+- dateRangerFilter.js
+- FormateDate.js
+- ParseFechaLocal.js
+- stringUtils.js
+
+
+Comando para realizar los tests unitarios:
+
+```bash
+npm test
+
+```
+
+
+
+
+
