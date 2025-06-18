@@ -40,4 +40,6 @@ npm run dev
 ```
 Esto levantará el servidor de desarrollo en http://localhost:5173
 
+### 5. Credenciales del Administrador
+Las mismas están disponibles en la entrega de la Actividad Obligatoria nro. 2
 
