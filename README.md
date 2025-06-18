@@ -16,3 +16,15 @@ Este proyecto es el frontend del sistema de gestión de la Peluquería César Fa
 ```bash
 git clone https://github.com/tu-usuario/frontend-peluqueria-farra.git
 cd frontend-peluqueria-farra
+```
+### 2. Instalar dependencias
+```bash
+npm install
+
+```
+### 3. Ejecutar el proyecto
+```bash
+npm run dev
+
+```
+Esto levantará el servidor de desarrollo en http://localhost:5173
