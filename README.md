@@ -14,7 +14,7 @@ Este proyecto es el frontend del sistema de gestión de la Peluquería César Fa
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/frontend-peluqueria-farra.git
+git clone https://github.com/mateochumbita/peluqueriacesarfarra_front.git
 cd frontend-peluqueria-farra
 ```
 ### 2. Instalar dependencias
@@ -22,9 +22,22 @@ cd frontend-peluqueria-farra
 npm install
 
 ```
-### 3. Ejecutar el proyecto
+### 3. Inicializar variables de entorno
+⚠️ Este proyecto depende de un backend para funcionar correctamente.
+Asegurate de tener el link del deploy del backend dentro de tus variables de entorno.
+1. Crear un archivo .env en la raiz de nuestro proyecto
+2. Copiar y pegar la siguiente variable de entorno
+   
+```env
+VITE_API_URL = https://cesarfarra-api.vercel.app/
+```
+
+
+### 4. Ejecutar el proyecto
 ```bash
 npm run dev
 
 ```
 Esto levantará el servidor de desarrollo en http://localhost:5173
+
+
