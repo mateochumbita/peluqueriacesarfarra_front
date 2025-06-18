@@ -11,6 +11,8 @@ Este proyecto es el frontend del sistema de gestión de la Peluquería César Fa
 
 ## Link del despliegue 
 En el siguiente link se encuentra la aplicación operativa desplegada en un servidor de Vercel, si desea hacer una prueba rápida se recomienda ingresar a este link, de lo contrario puede seguir con loas pasos de Instalación y ejecución del proyecto:
+
+### Link del despliegue:
 <https://peluqueriacesarfarra-front.vercel.app/>
 
 ## 📦 Instalación y ejecución del proyecto
