@@ -9,6 +9,10 @@ Este proyecto es el frontend del sistema de gestión de la Peluquería César Fa
 - 🎨 **Tailwind CSS** – Framework de estilos utilitario para construir diseños modernos.
 - 🧪 **Vitest** – Framework de pruebas para componentes y lógica del frontend.
 
+## Diagrama de Arquitectura de la Aplicación
+![hairsalon_architecture_diagram](https://github.com/user-attachments/assets/1a15f9b4-3e43-468a-a32a-2595b8a2d040)
+
+
 ## 🌐Link del despliegue 
 En el siguiente link se encuentra la aplicación operativa desplegada en un servidor de Vercel, si desea hacer una prueba rápida se recomienda ingresar a este link, de lo contrario puede seguir con loas pasos de Instalación y ejecución del proyecto:
 
@@ -65,8 +69,7 @@ npm test
 
 ```
 
-## Diagrama de Arquitectura de la Aplicación
-![hairsalon_architecture_diagram](https://github.com/user-attachments/assets/1a15f9b4-3e43-468a-a32a-2595b8a2d040)
+
 
 
 
