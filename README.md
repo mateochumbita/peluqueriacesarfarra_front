@@ -24,7 +24,7 @@ npm install
 ```
 ### 3. Inicializar variables de entorno
 ⚠️ Este proyecto depende de un backend para funcionar correctamente.
-Asegurate de tener el link del deploy del backend dentro de tus variables de entorno.
+Asegurate de tener el link del deploy del backend dentro de tus variables de entorno, **de lo contrario la aplicación no funcionará**
 1. Crear un archivo .env en la raiz de nuestro proyecto
 2. Copiar y pegar la siguiente variable de entorno
    
