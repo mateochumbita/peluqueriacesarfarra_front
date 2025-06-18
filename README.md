@@ -65,6 +65,8 @@ npm test
 
 ```
 
-![hairsalon_architecture_diagram](https://github.com/user-attachments/assets/3efc8a49-ab91-44e9-8601-13ad9c66c232)
+## Diagrama de Arquitectura de la Aplicación
+![hairsalon_architecture_diagram](https://github.com/user-attachments/assets/1a15f9b4-3e43-468a-a32a-2595b8a2d040)
+
 
 
