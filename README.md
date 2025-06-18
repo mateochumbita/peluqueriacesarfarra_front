@@ -57,6 +57,9 @@ Si lo desea, puede ejecutar las pruebas unitarias que están orientadas a probar
 - ParseFechaLocal.js
 - stringUtils.js
 
+
+Comando para realizar los tests unitarios:
+
 ```bash
 npm test
 
