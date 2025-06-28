@@ -11,11 +11,13 @@ import Services from "../pages/services/Services";
 import Stats from "../pages/stats/Stats";
 import Hairdressers from "../pages/hairdressers/Hairdressers";
 import ProtectedRoutes from "../components/auth/ProtectedRoutes";
-import Profile from "../pages/profile/Profile";
+import Profile from "../pages/client/profile/Profile";
 import AdminRoute from "../components/auth/AdminRoute";
 
 import About from "../pages/about/About";
 import Profiles from "../pages/profiles/Profiles";
+import ClientHome from "../pages/client/ClientHome";
+
 
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
@@ -40,9 +42,19 @@ export default function AppRouter() {
       <Route
         path="/calendar"
         element={
-          <AdminRoute>
+         
             <Calendar />
-          </AdminRoute>
+        
+        }
+      />
+
+
+      <Route
+        path="/home"
+        element={
+         
+            <ClientHome />
+        
         }
       />
 

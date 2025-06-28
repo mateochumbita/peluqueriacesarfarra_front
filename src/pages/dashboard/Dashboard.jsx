@@ -74,7 +74,7 @@ export default function Dashboard() {
           <div>
             <h1 className="text-2xl font-bold">Panel Principal</h1>
             <p className="text-gray-600 text-sm">
-              Bienvenido de vo, {nombre}. Aquí está el resumen de tu negocio.
+              Bienvenido de vuelta, {nombre}. Aquí está el resumen de tu negocio.
             </p>
           </div>
          <button

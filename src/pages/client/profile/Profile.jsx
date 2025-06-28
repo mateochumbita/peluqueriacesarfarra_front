@@ -1,11 +1,11 @@
-import Menu from "../../components/nav/Menu";
-import Navbar from "../../components/nav/Navbar";
+import Menu from "../../../components/client/nav/Menu";
+import Navbar from "../../../components/nav/Navbar";
 import { FiUser, FiMail, FiPhone, FiCalendar, FiTag } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { getClientByUserId } from "../../services/clients/clientService";
-import { getUsersById } from "../../services/users/usersService";
+import { getClientByUserId } from "../../../services/clients/clientService";
+import { getUsersById } from "../../../services/users/usersService";
 import { User } from "lucide-react";
-import ClientProfileModal from "../../components/profile/ClientProfileModal";
+import ClientProfileModal from "../../../components/profile/ClientProfileModal";
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [client, setClient] = useState(null);
@@ -50,6 +50,7 @@ export default function Profile() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+      <Menu />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <header className="flex items-center justify-between px-8 py-4 border-b bg-white">

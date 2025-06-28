@@ -12,7 +12,8 @@ export default function AdminRoute({ children }) {
   }
 
   if (user.Profile?.Nombre !== "admin") {
-   return <Navigate to={`/profile/${user.Id}`} replace />;
+  //  return <Navigate to={`/profile/${user.Id}`} replace />;
+  return <Navigate to="/home" replace />;
   }
 
   return children;
