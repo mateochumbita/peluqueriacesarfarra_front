@@ -12,6 +12,7 @@ export default function Calendar() {
   const [view, setView] = useState("week");
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
+  const [preselectedTime, setPreselectedTime] = useState(null);
 
   const { appointments, fetchAppointments } = useAppData();
 
@@ -88,44 +89,48 @@ export default function Calendar() {
   const handleNext = () => setCurrentDate((prev) => prev.add(1, view));
   const handleViewChange = (e) => setView(e.target.value);
 
-
   const getWorkingHours = (day) => {
-  const dayOfWeek = day.day(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+    const dayOfWeek = day.day(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
 
-  if (dayOfWeek === 0) return []; // Domingo sin turnos
+    if (dayOfWeek === 0) return []; // Domingo sin turnos
 
-  if (dayOfWeek === 1) {
-    return [{ start: "17:00", end: "21:00" }];
-  }
-
-  // Martes a Sábado
-  if (dayOfWeek >= 2 && dayOfWeek <= 6) {
-    return [
-      { start: "10:00", end: "13:00" },
-      { start: "16:00", end: "21:00" },
-    ];
-  }
-
-  return [];
-};
-
-const generateTimeSlots = (date) => {
-  const workingPeriods = getWorkingHours(date);
-  const slots = [];
-
-  workingPeriods.forEach(({ start, end }) => {
-    let current = dayjs(`${date.format("YYYY-MM-DD")}T${start}`);
-    const endTime = dayjs(`${date.format("YYYY-MM-DD")}T${end}`);
-
-    while (current.isBefore(endTime)) {
-      slots.push(current.format("HH:mm"));
-      current = current.add(20, "minute");
+    if (dayOfWeek === 1) {
+      return [{ start: "17:00", end: "21:00" }];
     }
-  });
 
-  return slots;
-};
+    // Martes a Sábado
+    if (dayOfWeek >= 2 && dayOfWeek <= 6) {
+      return [
+        { start: "10:00", end: "13:00" },
+        { start: "16:00", end: "21:00" },
+      ];
+    }
 
+    return [];
+  };
+
+  const generateTimeSlots = (date) => {
+    const workingPeriods = getWorkingHours(date);
+    const slots = [];
+
+    workingPeriods.forEach(({ start, end }) => {
+      let current = dayjs(`${date.format("YYYY-MM-DD")}T${start}`);
+      const endTime = dayjs(`${date.format("YYYY-MM-DD")}T${end}`);
+
+      while (current.isBefore(endTime)) {
+        slots.push(current.format("HH:mm"));
+        current = current.add(20, "minute");
+      }
+    });
+
+    return slots;
+  };
+
+  const handleSelectTime = (date, time) => {
+    setSelectedDate(date);
+    setPreselectedTime(time);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50 flex-col lg:flex-row">
@@ -153,9 +158,9 @@ const generateTimeSlots = (date) => {
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
-            
           }}
-       
+          initialDate={selectedDate}
+          initialTime={preselectedTime}
         />
 
         <main className="flex-1 p-4 sm:p-8 overflow-auto">
@@ -257,67 +262,73 @@ const generateTimeSlots = (date) => {
               )}
             </div>
             {/* Detalle del día seleccionado */}
-        <div className="mt-6 border-t pt-4">
-  <h3 className="text-lg font-semibold mb-2">
-    Citas del {selectedDate.format("DD/MM/YYYY")}
-  </h3>
+            <div className="mt-6 border-t pt-4">
+              <h3 className="text-lg font-semibold mb-2">
+                Citas del {selectedDate.format("DD/MM/YYYY")}
+              </h3>
 
-  {(() => {
-    const dateKey = selectedDate.format("YYYY-MM-DD");
-    const citasDelDia = turnos[dateKey] || [];
-    const horariosOcupados = citasDelDia.map((c) => c.time);
-    const horariosDisponibles = generateTimeSlots(selectedDate).filter(
-      (hora) => !horariosOcupados.includes(hora)
-    );
+              {(() => {
+                const dateKey = selectedDate.format("YYYY-MM-DD");
+                const citasDelDia = turnos[dateKey] || [];
+                const horariosOcupados = citasDelDia.map((c) => c.time);
+                const horariosDisponibles = generateTimeSlots(
+                  selectedDate
+                ).filter((hora) => !horariosOcupados.includes(hora));
 
-    return (
-      <>
-        {citasDelDia.length > 0 ? (
-          <div className="space-y-2 mb-4">
-            {citasDelDia.map((cita, idx) => (
-              <div
-                key={idx}
-                className={`p-3 rounded border ${getEstadoClass(cita.estado)}`}
-              >
-                <p className="text-sm font-medium">⏰ {cita.time}</p>
-                <p className="text-sm">
-                  🧑 {cita.cliente || "Sin nombre"} — 💇{" "}
-                  {cita.servicio || "Servicio no especificado"}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Estado: {cita.estado}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm mb-4">
-            No hay citas reservadas para este día.
-          </p>
-        )}
+                return (
+                  <>
+                    {citasDelDia.length > 0 ? (
+                      <div className="space-y-2 mb-4">
+                        {citasDelDia.map((cita, idx) => (
+                          <div
+                            key={idx}
+                            className={`p-3 rounded border ${getEstadoClass(
+                              cita.estado
+                            )}`}
+                          >
+                            <p className="text-sm font-medium">
+                              ⏰ {cita.time}
+                            </p>
+                            <p className="text-sm">
+                              🧑 {cita.cliente || "Sin nombre"} — 💇{" "}
+                              {cita.servicio || "Servicio no especificado"}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Estado: {cita.estado}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 text-sm mb-4">
+                        No hay citas reservadas para este día.
+                      </p>
+                    )}
 
-        <h4 className="text-md font-semibold mb-1">Horarios disponibles:</h4>
-        {horariosDisponibles.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {horariosDisponibles.map((hora, idx) => (
-              <div
-                key={idx}
-                className="p-2 rounded border border-green-400 bg-green-100 text-green-900 text-sm text-center"
-              >
-                ⏱️ {hora}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-gray-500">
-            No hay horarios disponibles para este día.
-          </p>
-        )}
-      </>
-    );
-  })()}
-</div>
-
+                    <h4 className="text-md font-semibold mb-1">
+                      Horarios disponibles:
+                    </h4>
+                    {horariosDisponibles.length > 0 ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                        {horariosDisponibles.map((hora, idx) => (
+                          <div
+                            key={idx}
+                            onClick={() => handleSelectTime(selectedDate, hora)}
+                            className="p-2 rounded border border-green-400 bg-green-100 text-green-900 text-sm text-center cursor-pointer hover:bg-green-200"
+                          >
+                            ⏱️ {hora}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500">
+                        No hay horarios disponibles para este día.
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
           </div>
         </main>
       </div>
