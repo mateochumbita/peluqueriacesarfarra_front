@@ -33,6 +33,9 @@ export default function Menu() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("nombreUsuario");
+    localStorage.removeItem("IdCliente");
     navigate("/login");
   };
 

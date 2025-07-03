@@ -17,7 +17,8 @@ import AdminRoute from "../components/auth/AdminRoute";
 import About from "../pages/about/About";
 import Profiles from "../pages/profiles/Profiles";
 import ClientHome from "../pages/client/ClientHome";
-
+import History from "../pages/client/HIstory";
+import ClientCalendar from "../pages/client/ClientCalendar";
 
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
@@ -42,8 +43,30 @@ export default function AppRouter() {
       <Route
         path="/calendar"
         element={
-         
+         <AdminRoute>
             <Calendar />
+           </AdminRoute>
+        }
+      />
+
+
+
+        <Route
+        path="/clientcalendar"
+        element={
+         
+            <ClientCalendar />
+       
+        }
+      />
+
+
+
+       <Route
+        path="/history"
+        element={
+         
+            <History />
         
         }
       />

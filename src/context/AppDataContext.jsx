@@ -1,7 +1,14 @@
 import { createContext, useContext, useState } from "react";
-import { getAllAppointments, getAllAppointmentsDays } from "../services/appointments/appointmentService";
+import {
+  getAllAppointments,
+  getAllAppointmentsDays,
+  getAppointmentsByClientId,
+} from "../services/appointments/appointmentService";
 
-import { getAllClientes, getAllDisabledClientes } from "../services/clients/clientService";
+import {
+  getAllClientes,
+  getAllDisabledClientes,
+} from "../services/clients/clientService";
 import { getAllEarnings } from "../services/earnings/earningService";
 import { getAllHairdressers } from "../services/hairdressers/hairdressersService";
 import { getAllHairdressersServices } from "../services/hairdressers_services/hairdressers_servicesService";
@@ -17,6 +24,7 @@ const AppDataContext = createContext();
 export function AppDataProvider({ children }) {
   const [appointments, setAppointments] = useState(null);
   const [appointmentsDays, setAppointmentsDays] = useState(null);
+  const [appointmentsByClientId, setAppointmentsByClientId] = useState(null);
   const [clients, setClients] = useState(null);
   const [disabledClients, setDisabledClients] = useState(null);
 
@@ -39,19 +47,26 @@ export function AppDataProvider({ children }) {
   const fetchAppointmentsDays = async () => {
     const res = await getAllAppointmentsDays();
     setAppointmentsDays(res?.supabaseResults || []);
-  }
+  };
+
+  const fetchAppointmentsByClientId = async (clientId) => {
+    const res = await getAppointmentsByClientId(clientId);
+
+    const sorted = res.supabaseResults.sort((a, b) => a.Id - b.Id);
+    setAppointmentsByClientId(sorted);
+  };
   const fetchAppointmentsStats = async () => {
     const res = await getAllAppointmentsStats();
     setAppointmentsStats(res || []);
-  }
+  };
   const fetchClientsStats = async () => {
     const res = await getAllClientesStats();
     setClientsStats(res || []);
-  }
+  };
   const fetchEarningsStats = async () => {
     const res = await getAllEarningsStats();
     setEarningsStats(res || []);
-  }
+  };
 
   const fetchClients = async () => {
     const res = await getAllClientes();
@@ -101,20 +116,48 @@ export function AppDataProvider({ children }) {
   return (
     <AppDataContext.Provider
       value={{
-        appointments, setAppointments, fetchAppointments,
-        fetchAppointmentsDays,        
-        appointmentsDays,setAppointmentsDays,
-        clients, setClients, fetchClients,
-        disabledClients, setDisabledClients, fetchDisabledClients,
-        earnings, setEarnings, fetchEarnings,
-        hairdressers, setHairdressers, fetchHairdressers,
-        hairdressersServices, setHairdressersServices, fetchHairdressersServices,
-        profiles, setProfiles, fetchProfiles,
-        services, setServices, fetchServices,
-        users, setUsers, fetchUsers,
-        appointmentsStats, setAppointmentsStats, fetchAppointmentsStats,
-        clientsStats, setClientsStats, fetchClientsStats,
-        earningsStats, setEarningsStats, fetchEarningsStats
+        appointments,
+        setAppointments,
+        appointmentsByClientId,
+        fetchAppointmentsByClientId,
+        setAppointmentsByClientId,
+        fetchAppointments,
+        fetchAppointmentsDays,
+        appointmentsDays,
+        setAppointmentsDays,
+        clients,
+        setClients,
+        fetchClients,
+        disabledClients,
+        setDisabledClients,
+        fetchDisabledClients,
+        earnings,
+        setEarnings,
+        fetchEarnings,
+        hairdressers,
+        setHairdressers,
+        fetchHairdressers,
+        hairdressersServices,
+        setHairdressersServices,
+        fetchHairdressersServices,
+        profiles,
+        setProfiles,
+        fetchProfiles,
+        services,
+        setServices,
+        fetchServices,
+        users,
+        setUsers,
+        fetchUsers,
+        appointmentsStats,
+        setAppointmentsStats,
+        fetchAppointmentsStats,
+        clientsStats,
+        setClientsStats,
+        fetchClientsStats,
+        earningsStats,
+        setEarningsStats,
+        fetchEarningsStats,
       }}
     >
       {children}

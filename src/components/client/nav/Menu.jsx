@@ -13,7 +13,7 @@ import {
 
 const clientMenuItems = [
   { icon: <FiHome />, label: "Panel Principal", path: "/dashboard" },
-  { icon: <FiCalendar />, label: "Calendario", path: "/calendar" },
+  { icon: <FiCalendar />, label: "Calendario", path: "/clientcalendar" },
   { icon: <FiClock />, label: "Historial de Turnos", path: "/history" },
   { icon: <FiUsers />, label: "Perfil", action: "profile" }, // cambio importante
   { icon: <FiBarChart2 />, label: "Puntos de Fidelidad", path: "/fidelity" },

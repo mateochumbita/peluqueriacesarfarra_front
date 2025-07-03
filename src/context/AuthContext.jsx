@@ -43,6 +43,8 @@ const login = async (data) => {
 
       if (cliente.status === "fulfilled" && cliente.value?.Nombre) {
         localStorage.setItem("nombreUsuario", cliente.value.Nombre);
+        localStorage.setItem("IdCliente", cliente.value.Id);
+        
         localStorage.setItem("rol", "cliente");
       } else if (peluquero.status === "fulfilled" && peluquero.value?.Nombre) {
         localStorage.setItem("nombreUsuario", peluquero.value.Nombre);
@@ -80,6 +82,10 @@ const login = async (data) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("nombreUsuario");
+    localStorage.removeItem("IdCliente");
+
     setUser(null);
     navigate("/login");
   };

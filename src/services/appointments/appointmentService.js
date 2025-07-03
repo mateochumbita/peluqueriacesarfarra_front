@@ -27,6 +27,21 @@ export const getAllAppointmentsDays = async () => {
   }
 };
 
+
+export const getAppointmentsByClientId = async (clientId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/api/v1/appointments/client/${clientId}`
+    );
+    return response.data;
+    
+  } catch (error) {
+    console.error("Error al obtener las citas del cliente:", error);
+    throw error;
+    
+  }
+};
+
 export const createAppointments = async (data) => {
   try {
     const response = await axiosInstance.post("/api/v1/appointments", data);

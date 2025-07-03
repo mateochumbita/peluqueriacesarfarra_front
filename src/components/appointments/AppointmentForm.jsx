@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAppData } from "../../context/AppDataContext";
 import {
   createAppointments,
   updateAppointments,
 } from "../../services/appointments/appointmentService";
 
-const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
+const AppointmentForm = ({
+  isOpen,
+  onClose,
+  editingAppointment,
+  onSaved,
+  initialDate,
+  initialTime,
+}) => {
   const {
     appointments,
     fetchAppointments,
@@ -16,6 +22,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     hairdressersServices,
     fetchAppointmentsStats,
   } = useAppData();
+
   const hairdressersWithServices = hairdressersServices
     ? Array.from(
         new Map(
@@ -24,6 +31,8 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
       )
     : [];
 
+  const [clienteDesdeLocalStorage, setClienteDesdeLocalStorage] = useState(null);
+
   const [form, setForm] = useState({
     cliente: "",
     peluquero: "",
@@ -31,23 +40,18 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     fecha: "",
     hora: "",
   });
-  const availableServicesByHairdresser = hairdressersServices?.filter(
-    (hs) => hs.IdHairdresser === Number(form.peluquero)
-  );
 
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
+  const availableServicesByHairdresser = hairdressersServices?.filter(
+    (hs) => hs.IdHairdresser === Number(form.peluquero)
+  );
+
   useEffect(() => {
-    if (!appointments) {
-      fetchAppointments();
-    }
-    if (!clients) {
-      fetchClients();
-    }
-    if (!hairdressersServices) {
-      fetchHairdressersServices();
-    }
+    if (!appointments) fetchAppointments();
+    if (!clients) fetchClients();
+    if (!hairdressersServices) fetchHairdressersServices();
   }, [
     appointments,
     fetchAppointments,
@@ -57,10 +61,20 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     hairdressersServices,
   ]);
 
- 
+  useEffect(() => {
+    const idCliente = localStorage.getItem("IdCliente");
+    if (idCliente) {
+      setClienteDesdeLocalStorage(idCliente);
+      setForm((prev) => ({
+        ...prev,
+        cliente: idCliente,
+      }));
+    }
+  }, []);
+
   const resetForm = () => {
     setForm({
-      cliente: "",
+      cliente: clienteDesdeLocalStorage || "",
       peluquero: "",
       servicio: "",
       fecha: "",
@@ -71,44 +85,47 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
 
   const showToast = (toast) => {
     setToast(toast);
-    setTimeout(() => {
-      setToast(null);
-    }, 3000);
+    setTimeout(() => setToast(null), 3000);
   };
 
   useEffect(() => {
     if (editingAppointment) {
       setForm({
-        cliente: editingAppointment.IdCliente?.toString() || "",
+        cliente:
+          editingAppointment.IdCliente?.toString() || clienteDesdeLocalStorage || "",
         peluquero:
-          editingAppointment.HairdresserService?.IdHairdresser?.toString() ||
-          "",
+          editingAppointment.HairdresserService?.IdHairdresser?.toString() || "",
         servicio:
           editingAppointment.HairdresserService?.IdService?.toString() || "",
         fecha: editingAppointment.Fecha,
         hora: editingAppointment.Hora,
       });
+    } else if (initialDate || initialTime) {
+      setForm((prev) => ({
+        ...prev,
+        fecha: initialDate ? initialDate.format("YYYY-MM-DD") : prev.fecha,
+        hora: initialTime || prev.hora,
+      }));
     } else {
-      setForm({
-        cliente: "",
-        peluquero: "",
-        servicio: "",
-        fecha: "",
-        hora: "",
-      });
+      resetForm();
     }
-    console.log("editingAppointment", editingAppointment);
-    console.log("editingAppointment.Id", editingAppointment?.Id);
-  }, [editingAppointment]);
+  }, [editingAppointment, initialDate, initialTime, clienteDesdeLocalStorage]);
 
   if (!isOpen) return null;
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (e.target.name === "peluquero") {
-      setForm({ ...form, peluquero: e.target.value, servicio: "" });
+    const { name, value } = e.target;
+    if (name === "peluquero") {
+      setForm((prev) => ({
+        ...prev,
+        peluquero: value,
+        servicio: "",
+      }));
     } else {
-      setForm({ ...form, [e.target.name]: e.target.value });
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
@@ -143,35 +160,27 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
     try {
       if (editingAppointment) {
         await updateAppointments(editingAppointment.Id, appointmentData);
-        showToast({
-          type: "success",
-          message: "Turno actualizado exitosamente",
-        });
+        showToast({ type: "success", message: "Turno actualizado exitosamente" });
       } else {
         await createAppointments(appointmentData);
         await fetchAppointmentsStats();
-        setToast({ type: "success", message: "Turno creado exitosamente" });
+        showToast({ type: "success", message: "Turno creado exitosamente" });
       }
 
       fetchAppointments();
       resetForm();
       onClose();
-      if (onSaved) onSaved(); // Notifica a la página que debe recargar
+      if (onSaved) onSaved();
     } catch (error) {
-      let errorMessage = "Error al guardar el turno.";
-
-      if (error.response && error.response.data && error.response.data.error) {
-        errorMessage = error.response.data.error;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-
+      const errorMessage =
+        error.response?.data?.error || error.message || "Error al guardar el turno.";
       setToast({ type: "error", message: errorMessage });
       console.error("Detalle del error:", error);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
       <div className="bg-white rounded-lg shadow-xl px-6 py-4 w-full max-w-md relative animate-[modalIn_0.25s_ease]">
@@ -208,6 +217,7 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
               onChange={handleChange}
               className="mt-1 w-full border rounded px-3 py-2"
               required
+              disabled={!!clienteDesdeLocalStorage}
             >
               <option value="">Seleccione un cliente</option>
               {clients &&
@@ -219,7 +229,6 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
             </select>
           </div>
 
-    
           {/* Peluquero */}
           <div>
             <label className="text-sm font-medium">Peluquero</label>
@@ -285,7 +294,6 @@ const AppointmentForm = ({ isOpen, onClose, editingAppointment, onSaved }) => {
             />
           </div>
 
-          {/* Botón */}
           <div className="text-center mt-4">
             <button
               type="submit"
