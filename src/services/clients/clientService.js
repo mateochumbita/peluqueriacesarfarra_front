@@ -70,3 +70,18 @@ export const getClientByUserId = async (userId) => {
     console.error("Error al obtener el cliente:", error);
   }
 };
+
+
+
+export const reedemPoints = async (idClient, points) => {
+  try {
+    const response = await axiosInstance.post('/api/v1/clients/reedem-points', {
+      idClient, // ✅ nombre correcto según lo que espera el backend
+      points,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al canjear puntos:", error);
+    throw error;
+  }
+};

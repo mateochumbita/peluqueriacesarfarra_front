@@ -5,6 +5,8 @@ import {
   updateAppointments,
 } from "../../services/appointments/appointmentService";
 
+import { reedemPoints } from "../../services/clients/clientService";
+
 const AppointmentForm = ({
   isOpen,
   onClose,
@@ -31,7 +33,8 @@ const AppointmentForm = ({
       )
     : [];
 
-  const [clienteDesdeLocalStorage, setClienteDesdeLocalStorage] = useState(null);
+  const [clienteDesdeLocalStorage, setClienteDesdeLocalStorage] =
+    useState(null);
 
   const [form, setForm] = useState({
     cliente: "",
@@ -43,6 +46,11 @@ const AppointmentForm = ({
 
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
+
+  const [precioServicio, setPrecioServicio] = useState("");
+  const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [canjearPuntos, setCanjearPuntos] = useState(false);
+  const [precioConDescuento, setPrecioConDescuento] = useState("");
 
   const availableServicesByHairdresser = hairdressersServices?.filter(
     (hs) => hs.IdHairdresser === Number(form.peluquero)
@@ -60,6 +68,8 @@ const AppointmentForm = ({
     fetchHairdressersServices,
     hairdressersServices,
   ]);
+
+  console.log("Hairdressers with services:", hairdressersServices);
 
   useEffect(() => {
     const idCliente = localStorage.getItem("IdCliente");
@@ -80,6 +90,7 @@ const AppointmentForm = ({
       fecha: "",
       hora: "",
     });
+    setCanjearPuntos(false);
     setToast(null);
   };
 
@@ -92,9 +103,12 @@ const AppointmentForm = ({
     if (editingAppointment) {
       setForm({
         cliente:
-          editingAppointment.IdCliente?.toString() || clienteDesdeLocalStorage || "",
+          editingAppointment.IdCliente?.toString() ||
+          clienteDesdeLocalStorage ||
+          "",
         peluquero:
-          editingAppointment.HairdresserService?.IdHairdresser?.toString() || "",
+          editingAppointment.HairdresserService?.IdHairdresser?.toString() ||
+          "",
         servicio:
           editingAppointment.HairdresserService?.IdService?.toString() || "",
         fecha: editingAppointment.Fecha,
@@ -111,7 +125,28 @@ const AppointmentForm = ({
     }
   }, [editingAppointment, initialDate, initialTime, clienteDesdeLocalStorage]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (form.peluquero && form.servicio) {
+      const relacion = hairdressersServices?.find(
+        (hs) =>
+          hs.IdHairdresser === Number(form.peluquero) &&
+          hs.IdService === Number(form.servicio)
+      );
+
+      setPrecioServicio(relacion?.Service?.Precio || "");
+    } else {
+      setPrecioServicio("");
+    }
+  }, [form.peluquero, form.servicio, hairdressersServices]);
+
+  useEffect(() => {
+    if (form.cliente && clients) {
+      const cliente = clients.find((c) => c.Id === Number(form.cliente));
+      setClienteSeleccionado(cliente || null);
+    } else {
+      setClienteSeleccionado(null);
+    }
+  }, [form.cliente, clients]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,6 +164,16 @@ const AppointmentForm = ({
     }
   };
 
+  useEffect(() => {
+    if (precioServicio && canjearPuntos) {
+      const descuento = parseFloat(precioServicio) * 0.8;
+      setPrecioConDescuento(descuento.toFixed(2));
+    } else {
+      setPrecioConDescuento("");
+    }
+  }, [precioServicio, canjearPuntos]);
+
+  if (!isOpen) return null;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -155,12 +200,21 @@ const AppointmentForm = ({
       Hora: form.hora,
       Estado: "Reservado",
       IdHairdresser_Service: hairdresserService.Id,
+      PuntosFidelidad: canjearPuntos,
     };
 
     try {
+      // Si se quiere canjear puntos y tiene suficientes
+      if (canjearPuntos && clienteSeleccionado?.PuntosFidelidad >= 5) {
+        await reedemPoints(Number(form.cliente), 5);
+      }
+
       if (editingAppointment) {
         await updateAppointments(editingAppointment.Id, appointmentData);
-        showToast({ type: "success", message: "Turno actualizado exitosamente" });
+        showToast({
+          type: "success",
+          message: "Turno actualizado exitosamente",
+        });
       } else {
         await createAppointments(appointmentData);
         await fetchAppointmentsStats();
@@ -173,7 +227,9 @@ const AppointmentForm = ({
       if (onSaved) onSaved();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || error.message || "Error al guardar el turno.";
+        error.response?.data?.error ||
+        error.message ||
+        "Error al guardar el turno.";
       setToast({ type: "error", message: errorMessage });
       console.error("Detalle del error:", error);
     } finally {
@@ -266,6 +322,40 @@ const AppointmentForm = ({
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Precio del servicio */}
+          <div>
+            <label className="text-sm font-medium">Precio</label>
+            <input
+              type="text"
+              value={
+                canjearPuntos && precioConDescuento
+                  ? `$${precioConDescuento} (20% OFF)`
+                  : precioServicio
+                  ? `$${precioServicio}`
+                  : ""
+              }
+              readOnly
+              className="mt-1 w-full border rounded px-3 py-2 bg-gray-100 text-gray-700"
+              placeholder="Seleccione un servicio"
+            />
+          </div>
+
+          {/* Checkbox para canjear puntos */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="canjearPuntos"
+              checked={canjearPuntos}
+              onChange={(e) => setCanjearPuntos(e.target.checked)}
+              disabled={
+                !clienteSeleccionado || clienteSeleccionado.PuntosFidelidad < 5
+              }
+            />
+            <label htmlFor="canjearPuntos" className="text-sm">
+              Canjear puntos de fidelidad
+            </label>
           </div>
 
           {/* Fecha */}
