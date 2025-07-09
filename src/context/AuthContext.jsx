@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login
+// Login
 const login = async (data) => {
   const res = await loginService(data);
 
@@ -34,7 +35,6 @@ const login = async (data) => {
     localStorage.setItem("user", JSON.stringify(res.user));
     setUser(res.user);
 
-    // Intentar obtener nombre desde client o hairdresser
     try {
       const [cliente, peluquero] = await Promise.allSettled([
         getClientByUserId(res.user.Id),
@@ -44,8 +44,13 @@ const login = async (data) => {
       if (cliente.status === "fulfilled" && cliente.value?.Nombre) {
         localStorage.setItem("nombreUsuario", cliente.value.Nombre);
         localStorage.setItem("IdCliente", cliente.value.Id);
-        
         localStorage.setItem("rol", "cliente");
+
+        // Guardar puntos de fidelidad
+        if (typeof cliente.value.PuntosFidelidad === "number") {
+          localStorage.setItem("puntosFidelidad", cliente.value.PuntosFidelidad);
+        }
+
       } else if (peluquero.status === "fulfilled" && peluquero.value?.Nombre) {
         localStorage.setItem("nombreUsuario", peluquero.value.Nombre);
         localStorage.setItem("rol", "peluquero");
@@ -70,6 +75,7 @@ const login = async (data) => {
     if (res?.ok && res.token) {
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
+
       setUser(res.user);
       navigate("/dashboard");
       return { ok: true };
@@ -85,6 +91,7 @@ const login = async (data) => {
     localStorage.removeItem("rol");
     localStorage.removeItem("nombreUsuario");
     localStorage.removeItem("IdCliente");
+     localStorage.removeItem("puntosFidelidad");
 
     setUser(null);
     navigate("/login");

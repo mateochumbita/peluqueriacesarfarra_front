@@ -16,7 +16,7 @@ const clientMenuItems = [
   { icon: <FiCalendar />, label: "Calendario", path: "/clientcalendar" },
   { icon: <FiClock />, label: "Historial de Turnos", path: "/history" },
   { icon: <FiUsers />, label: "Perfil", action: "profile" }, // cambio importante
-  { icon: <FiBarChart2 />, label: "Puntos de Fidelidad", path: "/fidelity" },
+  // { icon: <FiBarChart2 />, label: "Puntos de Fidelidad", path: "/fidelity" },
   { icon: <FiLogOut />, label: "Cerrar Sesión", action: "logout" },
 ];
 

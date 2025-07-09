@@ -9,7 +9,7 @@ const History = () => {
 
   useEffect(() => {
     if (!appointmentsByClientId) {
-      const clientId = 18; // Reemplazar con ID dinámico si se desea
+      const clientId = localStorage.getItem("IdCliente"); // Reemplazar con ID dinámico si se desea
       fetchAppointmentsByClientId(clientId);
     }
   }, [appointmentsByClientId, fetchAppointmentsByClientId]);
@@ -36,7 +36,11 @@ const History = () => {
 
         {/* Lista de Turnos */}
         <main className="flex-1 px-8 pb-8">
-          {appointmentsByClientId?.length > 0 ? (
+          {!appointmentsByClientId ? (
+            <div className="text-center text-gray-500 py-12">
+              Cargando historial...
+            </div>
+          ) : appointmentsByClientId.length > 0 ? (
             <div className="space-y-6 mt-6">
               {appointmentsByClientId
                 .sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha))
@@ -54,14 +58,17 @@ const History = () => {
                         {appointment.desc?.Peluquero || "Peluquero"}
                       </p>
                       <p className="text-gray-600 mb-1 flex items-center gap-2">
-                        <FiCalendar className="text-gray-500" /> {appointment.Fecha}
+                        <FiCalendar className="text-gray-500" />{" "}
+                        {appointment.Fecha}
                       </p>
                       <p className="text-gray-600 mb-1 flex items-center gap-2">
                         <FiClock className="text-gray-500" /> {appointment.Hora}
                       </p>
                       <p className="text-gray-600 mb-1 flex items-center gap-2">
                         <FiTag className="text-gray-500" /> Estado:{" "}
-                        <span className="font-medium">{appointment.Estado}</span>
+                        <span className="font-medium">
+                          {appointment.Estado}
+                        </span>
                       </p>
                       {appointment.desc?.DescripcionServicio && (
                         <p className="text-sm text-gray-500 mt-2">
