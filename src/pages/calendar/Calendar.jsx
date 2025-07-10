@@ -5,7 +5,9 @@ import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { useAppData } from "../../context/AppDataContext";
 import AppointmentForm from "../../components/appointments/AppointmentForm";
+import capitalizeFirstLetter from "../../utils/capitalize";
 dayjs.extend(isoWeek);
+dayjs.locale('es');
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(dayjs());
@@ -168,7 +170,7 @@ export default function Calendar() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold">
-                  {currentDate.format("MMMM YYYY")}
+                  {capitalizeFirstLetter(currentDate.format("MMMM YYYY"))}
                 </h2>
                 <p className="text-gray-500 text-sm">
                   Vista: {view === "month" ? "Mes" : "Semana"}
