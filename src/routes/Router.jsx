@@ -33,9 +33,9 @@ export default function AppRouter() {
         path="/dashboard"
         element={
           <AdminRoute>
-            <Suspense fallback={<div>Cargando dashboard...</div>}>
+            {/* <Suspense fallback={<div>Cargando dashboard...</div>}> */}
               <Dashboard />
-            </Suspense>
+            {/* </Suspense> */}
           </AdminRoute>
         }
       />

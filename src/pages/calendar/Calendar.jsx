@@ -7,7 +7,7 @@ import { useAppData } from "../../context/AppDataContext";
 import AppointmentForm from "../../components/appointments/AppointmentForm";
 import capitalizeFirstLetter from "../../utils/capitalize";
 dayjs.extend(isoWeek);
-dayjs.locale('es');
+dayjs.locale("es");
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(dayjs());
@@ -17,6 +17,7 @@ export default function Calendar() {
   const [preselectedTime, setPreselectedTime] = useState(null);
 
   const { appointments, fetchAppointments } = useAppData();
+  const loading = appointments === null;
 
   useEffect(() => {
     fetchAppointments();
@@ -166,65 +167,70 @@ export default function Calendar() {
         />
 
         <main className="flex-1 p-4 sm:p-8 overflow-auto">
-          <div className="bg-white rounded-lg border p-4 sm:p-6 max-w-7xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold">
-                  {capitalizeFirstLetter(currentDate.format("MMMM YYYY"))}
-                </h2>
-                <p className="text-gray-500 text-sm">
-                  Vista: {view === "month" ? "Mes" : "Semana"}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handlePrev}
-                  className="p-2 rounded border hover:bg-gray-100"
-                >
-                  &lt;
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="p-2 rounded border hover:bg-gray-100"
-                >
-                  &gt;
-                </button>
-                <select
-                  value={view}
-                  onChange={handleViewChange}
-                  className="ml-2 border rounded px-2 py-1 text-sm"
-                >
-                  <option value="week">Semana</option>
-                  <option value="month">Mes</option>
-                </select>
-              </div>
+          {loading ? (
+            <div className="text-center text-gray-500 py-8">
+              Cargando Calendario...
             </div>
+          ) : (
+            <div className="bg-white rounded-lg border p-4 sm:p-6 max-w-7xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold">
+                    {capitalizeFirstLetter(currentDate.format("MMMM YYYY"))}
+                  </h2>
+                  <p className="text-gray-500 text-sm">
+                    Vista: {view === "month" ? "Mes" : "Semana"}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handlePrev}
+                    className="p-2 rounded border hover:bg-gray-100"
+                  >
+                    &lt;
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="p-2 rounded border hover:bg-gray-100"
+                  >
+                    &gt;
+                  </button>
+                  <select
+                    value={view}
+                    onChange={handleViewChange}
+                    className="ml-2 border rounded px-2 py-1 text-sm"
+                  >
+                    <option value="week">Semana</option>
+                    <option value="month">Mes</option>
+                  </select>
+                </div>
+              </div>
 
-            {/* Títulos de días */}
-            <div className="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700 mb-2">
-              <div>Lun</div>
-              <div>Mar</div>
-              <div>Mié</div>
-              <div>Jue</div>
-              <div>Vie</div>
-              <div>Sáb</div>
-              <div>Dom</div>
-            </div>
+              {/* Títulos de días */}
+              <div className="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700 mb-2">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+                <div>Dom</div>
+              </div>
 
-            {/* Calendario */}
-            <div className="grid grid-cols-7 gap-2 text-sm">
-              {calendarWeeks.map((week, wi) =>
-                week.map((day, di) => {
-                  const dateKey = day.format("YYYY-MM-DD");
-                  const citas = turnos[dateKey] || [];
-                  const isToday = day.isSame(dayjs(), "day");
-                  const isSelected = day.isSame(selectedDate, "day");
+              {/* Calendario */}
+              <div className="grid grid-cols-7 gap-2 text-sm">
+                {calendarWeeks.map((week, wi) =>
+                  week.map((day, di) => {
+                    const dateKey = day.format("YYYY-MM-DD");
+                    const citas = turnos[dateKey] || [];
+                    const isToday = day.isSame(dayjs(), "day");
+                    const isSelected = day.isSame(selectedDate, "day");
 
-                  return (
-                    <div
-                      key={`${wi}-${di}`}
-                      onClick={() => setSelectedDate(day)}
-                      className={`min-h-[100px] sm:min-h-[120px] border rounded-lg p-2 relative cursor-pointer transition-all
+                    return (
+                      <div
+                        key={`${wi}-${di}`}
+                        onClick={() => setSelectedDate(day)}
+                        className={`min-h-[100px] sm:min-h-[120px] border rounded-lg p-2 relative cursor-pointer transition-all
                       ${
                         day.isSame(currentDate, "month")
                           ? "bg-white"
@@ -232,106 +238,109 @@ export default function Calendar() {
                       }
                       ${isSelected ? "ring-2 ring-blue-500" : ""}
                       hover:shadow-md`}
-                    >
-                      <span
-                        className={`absolute top-1 right-2 text-xs font-semibold ${
-                          isToday ? "text-red-500" : "text-gray-500"
-                        }`}
                       >
-                        {day.date()}
-                      </span>
+                        <span
+                          className={`absolute top-1 right-2 text-xs font-semibold ${
+                            isToday ? "text-red-500" : "text-gray-500"
+                          }`}
+                        >
+                          {day.date()}
+                        </span>
 
-                      {citas.length > 0 && (
-                        <div className="absolute top-1 left-2 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
-                          {citas.length}
+                        {citas.length > 0 && (
+                          <div className="absolute top-1 left-2 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                            {citas.length}
+                          </div>
+                        )}
+
+                        <div className="mt-5 flex flex-col gap-1 max-h-[65px] overflow-y-auto scrollbar-thin">
+                          {citas.map((cita, i) => (
+                            <div
+                              key={i}
+                              className="bg-blue-100 text-blue-900 font-medium rounded px-1.5 py-0.5 text-xs leading-tight border border-blue-400 truncate"
+                              title={`${cita.time} - ${cita.desc}`}
+                            >
+                              ⏰ {cita.time} - {cita.servicio}
+                            </div>
+                          ))}
                         </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              {/* Detalle del día seleccionado */}
+              <div className="mt-6 border-t pt-4">
+                <h3 className="text-lg font-semibold mb-2">
+                  Citas del {selectedDate.format("DD/MM/YYYY")}
+                </h3>
+
+                {(() => {
+                  const dateKey = selectedDate.format("YYYY-MM-DD");
+                  const citasDelDia = turnos[dateKey] || [];
+                  const horariosOcupados = citasDelDia.map((c) => c.time);
+                  const horariosDisponibles = generateTimeSlots(
+                    selectedDate
+                  ).filter((hora) => !horariosOcupados.includes(hora));
+
+                  return (
+                    <>
+                      {citasDelDia.length > 0 ? (
+                        <div className="space-y-2 mb-4">
+                          {citasDelDia.map((cita, idx) => (
+                            <div
+                              key={idx}
+                              className={`p-3 rounded border ${getEstadoClass(
+                                cita.estado
+                              )}`}
+                            >
+                              <p className="text-sm font-medium">
+                                ⏰ {cita.time}
+                              </p>
+                              <p className="text-sm">
+                                🧑 {cita.cliente || "Sin nombre"} — 💇{" "}
+                                {cita.servicio || "Servicio no especificado"}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                Estado: {cita.estado}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-gray-500 text-sm mb-4">
+                          No hay citas reservadas para este día.
+                        </p>
                       )}
 
-                      <div className="mt-5 flex flex-col gap-1 max-h-[65px] overflow-y-auto scrollbar-thin">
-                        {citas.map((cita, i) => (
-                          <div
-                            key={i}
-                            className="bg-blue-100 text-blue-900 font-medium rounded px-1.5 py-0.5 text-xs leading-tight border border-blue-400 truncate"
-                            title={`${cita.time} - ${cita.desc}`}
-                          >
-                            ⏰ {cita.time} - {cita.servicio}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                      <h4 className="text-md font-semibold mb-1">
+                        Horarios disponibles:
+                      </h4>
+                      {horariosDisponibles.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                          {horariosDisponibles.map((hora, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() =>
+                                handleSelectTime(selectedDate, hora)
+                              }
+                              className="p-2 rounded border border-green-400 bg-green-100 text-green-900 text-sm text-center cursor-pointer hover:bg-green-200"
+                            >
+                              ⏱️ {hora}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">
+                          No hay horarios disponibles para este día.
+                        </p>
+                      )}
+                    </>
                   );
-                })
-              )}
+                })()}
+              </div>
             </div>
-            {/* Detalle del día seleccionado */}
-            <div className="mt-6 border-t pt-4">
-              <h3 className="text-lg font-semibold mb-2">
-                Citas del {selectedDate.format("DD/MM/YYYY")}
-              </h3>
-
-              {(() => {
-                const dateKey = selectedDate.format("YYYY-MM-DD");
-                const citasDelDia = turnos[dateKey] || [];
-                const horariosOcupados = citasDelDia.map((c) => c.time);
-                const horariosDisponibles = generateTimeSlots(
-                  selectedDate
-                ).filter((hora) => !horariosOcupados.includes(hora));
-
-                return (
-                  <>
-                    {citasDelDia.length > 0 ? (
-                      <div className="space-y-2 mb-4">
-                        {citasDelDia.map((cita, idx) => (
-                          <div
-                            key={idx}
-                            className={`p-3 rounded border ${getEstadoClass(
-                              cita.estado
-                            )}`}
-                          >
-                            <p className="text-sm font-medium">
-                              ⏰ {cita.time}
-                            </p>
-                            <p className="text-sm">
-                              🧑 {cita.cliente || "Sin nombre"} — 💇{" "}
-                              {cita.servicio || "Servicio no especificado"}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Estado: {cita.estado}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-gray-500 text-sm mb-4">
-                        No hay citas reservadas para este día.
-                      </p>
-                    )}
-
-                    <h4 className="text-md font-semibold mb-1">
-                      Horarios disponibles:
-                    </h4>
-                    {horariosDisponibles.length > 0 ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                        {horariosDisponibles.map((hora, idx) => (
-                          <div
-                            key={idx}
-                            onClick={() => handleSelectTime(selectedDate, hora)}
-                            className="p-2 rounded border border-green-400 bg-green-100 text-green-900 text-sm text-center cursor-pointer hover:bg-green-200"
-                          >
-                            ⏱️ {hora}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-gray-500">
-                        No hay horarios disponibles para este día.
-                      </p>
-                    )}
-                  </>
-                );
-              })()}
-            </div>
-          </div>
+          )}
         </main>
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function ClientCalendar() {
   const [preselectedTime, setPreselectedTime] = useState(null);
 
   const { appointments, fetchAppointments } = useAppData();
+  const loading = appointments === null;
 
   useEffect(() => {
     fetchAppointments();
@@ -149,7 +150,12 @@ export default function ClientCalendar() {
         />
 
         <main className="flex-1 p-4 sm:p-8 overflow-auto">
-          <div className="bg-white rounded-lg border p-4 sm:p-6 max-w-7xl mx-auto">
+          {loading ? (
+             <div className="text-center text-gray-500 py-8">
+              Cargando Calendario...
+            </div>
+          ):
+          (<div className="bg-white rounded-lg border p-4 sm:p-6 max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold">
@@ -276,6 +282,7 @@ export default function ClientCalendar() {
               })()}
             </div>
           </div>
+          )}
         </main>
       </div>
     </div>
