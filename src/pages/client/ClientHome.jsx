@@ -16,6 +16,7 @@ export default function ClientHome() {
   }, []);
 
   const { appointmentsByClientId, fetchAppointmentsByClientId } = useAppData();
+  const loading = appointmentsByClientId === null;
 
   useEffect(() => {
     if (!appointmentsByClientId) {
@@ -45,6 +46,12 @@ export default function ClientHome() {
         </header>
 
         {/* Cards de resumen */}
+
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-gray-500">Cargando...</p>
+          </div>
+        ) : ( 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-8">
           <div className="bg-white rounded-lg p-4 border flex flex-col gap-1">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -104,7 +111,7 @@ export default function ClientHome() {
             </h2>
             <p className="text-gray-500 text-sm">Puntos Obtenidos: {puntos}</p>
           </div>
-        </section>
+        </section>)}
 
         {/* Sección inferior futura */}
         {/* <section className="p-8 pt-0">
